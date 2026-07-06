@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>GetOnBikes — Style guide (preview)</title>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .swatch { display: inline-flex; flex-direction: column; align-items: center; gap: 6px; margin: 0 12px 12px 0; }
+  .swatch__block { width: 72px; height: 48px; border-radius: 8px; border: 1px solid var(--border); }
+  section.demo { padding: 32px 0; border-bottom: 1px solid var(--border); }
+  section.demo .container > h2 { margin-bottom: 16px; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 12px; }
+</style>
+</head>
+<body>
+
+<section class="demo">
+  <div class="container">
+    <h2>Colour tokens</h2>
+    <div class="row">
+      <div class="swatch"><div class="swatch__block" style="background:var(--orange)"></div>orange</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--orange-dark)"></div>orange-dark</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--orange-light)"></div>orange-light</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--green)"></div>green</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--green-light)"></div>green-light</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--navy)"></div>navy</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--off)"></div>off</div>
+      <div class="swatch"><div class="swatch__block" style="background:var(--border)"></div>border</div>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Typography</h2>
+    <p class="text-display">Display 2.25rem/800</p>
+    <h1>H1 heading 1.75rem/800</h1>
+    <h2>H2 heading 1.375rem/700</h2>
+    <h3>H3 heading 1.125rem/700</h3>
+    <p class="text-body">Body copy at 1rem/400. Find the right training. Get on the road.</p>
+    <p class="text-body-sm">Body sm at 0.875rem/400 — no paid placements in results.</p>
+    <p class="text-label">Label / eyebrow</p>
+    <p class="text-fine">Fine print at 0.75rem/400.</p>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Rating bubbles</h2>
+    <div class="row">
+      <div class="rating-bubble rating-bubble--sm">4.8</div>
+      <div class="rating-bubble rating-bubble--md">4.8</div>
+      <div class="rating-bubble rating-bubble--lg">4.8</div>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Buttons</h2>
+    <div class="row">
+      <button class="btn btn--primary">Primary</button>
+      <button class="btn btn--green">Green</button>
+      <button class="btn btn--outline">Outline</button>
+      <button class="btn btn--ghost">Ghost</button>
+    </div>
+    <div class="row">
+      <button class="btn btn--primary btn--sm">Primary sm</button>
+      <button class="btn btn--outline btn--sm">Outline sm</button>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Licence badges</h2>
+    <div class="row">
+      <span class="licence-badge licence-badge--cbt">CBT</span>
+      <span class="licence-badge licence-badge--a1">A1</span>
+      <span class="licence-badge licence-badge--a2">A2</span>
+      <span class="licence-badge licence-badge--full-a">Full A</span>
+      <span class="licence-badge licence-badge--mod">Mod 1 &amp; 2</span>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Tags</h2>
+    <div class="row">
+      <span class="tag">Evening courses</span>
+      <span class="tag">On-site parking</span>
+      <span class="tag">Bike hire included</span>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Licence card</h2>
+    <div class="licence-grid" style="max-width:600px">
+      <a href="#" class="licence-card">
+        <span class="licence-badge licence-badge--cbt licence-card__badge">CBT</span>
+        <p class="licence-card__title">Compulsory basic training</p>
+        <p class="licence-card__desc">Before you ride on the road</p>
+        <p class="licence-card__count">412 schools</p>
+      </a>
+      <a href="#" class="licence-card">
+        <span class="licence-badge licence-badge--a2 licence-card__badge">A2</span>
+        <p class="licence-card__title">Restricted licence</p>
+        <p class="licence-card__desc">Ride from 19, up to 47bhp</p>
+        <p class="licence-card__count">301 schools</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Region pill</h2>
+    <div class="region-pills">
+      <a href="#" class="region-pill">London</a>
+      <a href="#" class="region-pill">Manchester</a>
+      <a href="#" class="region-pill">Edinburgh</a>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Hero search bar</h2>
+    <div class="hero-search" style="max-width:600px">
+      <input class="hero-search__input" placeholder="Search by school or postcode">
+      <select class="hero-search__select"><option>All licences</option></select>
+      <button class="btn btn--primary hero-search__submit">Search</button>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Navbar search</h2>
+    <div class="navbar-search" style="max-width:320px">
+      <input class="navbar-search__input" placeholder="Search schools">
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Listing card</h2>
+    <div class="listing-list" style="max-width:760px">
+      <div class="listing-card">
+        <div class="listing-card__image">
+          <span class="listing-card__rank">#1 in Edinburgh</span>
+          RM
+          <span class="listing-card__badge">Riders' Choice</span>
+        </div>
+        <div class="listing-card__content">
+          <div class="listing-card__rating"><div class="rating-bubble rating-bubble--md">4.9</div></div>
+          <h3>Ridley Motorcycle Training</h3>
+          <p class="text-body-sm" style="color:var(--text-2)">"Patient instructors, small groups, passed first time." — honest CBT and Mod 1&amp;2 training in the city centre.</p>
+          <div class="row" style="margin-top:12px">
+            <span class="licence-badge licence-badge--cbt">CBT</span>
+            <span class="licence-badge licence-badge--a2">A2</span>
+            <span class="tag">Evening courses</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>Content card / sidebar card</h2>
+    <div class="row" style="align-items:flex-start">
+      <div class="content-card" style="width:360px">
+        <h3 class="content-card__title">About this school</h3>
+        <p class="text-body-sm">Content card body copy sits here, describing the school or guide section in plain English.</p>
+      </div>
+      <div class="sidebar-card" style="width:240px">
+        <h3 class="sidebar-card__title">Quick facts</h3>
+        <p class="text-body-sm">Sidebar card content, narrower padding.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="demo">
+  <div class="container">
+    <h2>School hero band</h2>
+    <div class="school-hero">
+      <div class="container school-hero__inner" style="padding:0">
+        <div class="school-hero__logo">RM</div>
+        <div class="school-hero__meta">
+          <h1 style="margin:0 0 4px">Ridley Motorcycle Training</h1>
+          <p class="text-body-sm" style="color:var(--text-3)">Edinburgh · CBT, A1, A2, Full A</p>
+        </div>
+        <div class="school-hero__score">
+          <div class="rating-bubble rating-bubble--lg">4.9</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container footer__grid">
+    <div><p class="text-label" style="color:#fff">GetOnBikes</p></div>
+    <div><p class="text-label" style="color:#fff">Licences</p></div>
+    <div><p class="text-label" style="color:#fff">Company</p></div>
+    <div><p class="text-label" style="color:#fff">Legal</p></div>
+  </div>
+</footer>
+
+</body>
+</html>

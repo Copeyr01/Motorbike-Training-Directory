@@ -230,7 +230,11 @@ getonbikes/
     style.css             — single shared stylesheet, all tokens as CSS vars
   pages/
     licence-guide.html    — CBT guide (template for all licence pages)
-    school-profile.html   — school listing (template for all schools)
+    schools/
+      edinburgh-motorcycle-training.html
+      two-wheels.html
+      saltire-motorcycle-training.html
+      harleys-rider-training.html
 ```
 
 ---

@@ -213,7 +213,7 @@ Logo block (64px, navy gradient, border-radius xl) | name + meta + badges | scor
 - Sentence case, plain English
 
 **Do:** "Find the right training. Get on the road."
-**Do:** "No paid placements in results."
+**Do:** "Rankings are never for sale."
 **Do:** "Help other riders make the right choice."
 **Don't:** "Empowering motorcyclists to achieve their licence goals."
 **Don't:** "Leveraging a best-in-class review ecosystem."
@@ -237,6 +237,7 @@ getonbikes/
 
 ## Key decisions
 
+- Rankings are review-driven and never for sale. Sponsored listings, if introduced, are a clearly labeled unit shown separately from the ranked list — they never alter rank order or displace a school based on payment.
 - Stars replaced with green rating bubbles (TripAdvisor-style)
 - Orange used exclusively for CTAs and brand — never for ratings or trust signals
 - Green used exclusively for ratings and trust — never for CTAs

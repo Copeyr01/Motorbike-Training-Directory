@@ -133,7 +133,7 @@
 
     <div class="listing-list">
 
-      <a href="pages/schools/edinburgh-motorcycle-training.html" class="listing-card">
+      <a href="pages/schools/edinburgh-motorcycle-training.html" class="listing-card" data-name="Edinburgh Motorcycle Training" data-area="Straiton" data-licences="cbt full-a">
         <div class="listing-card__image">
           <span class="listing-card__rank">Straiton</span>
           EMT
@@ -150,7 +150,7 @@
         </div>
       </a>
 
-      <a href="pages/schools/two-wheels.html" class="listing-card">
+      <a href="pages/schools/two-wheels.html" class="listing-card" data-name="Two Wheels Motorcycle Training" data-area="Peffermill" data-licences="cbt a2 full-a">
         <div class="listing-card__image">
           <span class="listing-card__rank">Peffermill</span>
           TW
@@ -168,7 +168,7 @@
         </div>
       </a>
 
-      <a href="pages/schools/saltire-motorcycle-training.html" class="listing-card">
+      <a href="pages/schools/saltire-motorcycle-training.html" class="listing-card" data-name="Saltire Motorcycle Training" data-area="Gorgie" data-licences="cbt full-a">
         <div class="listing-card__image">
           <span class="listing-card__rank">Gorgie</span>
           SMT
@@ -186,7 +186,7 @@
         </div>
       </a>
 
-      <a href="pages/schools/harleys-rider-training.html" class="listing-card">
+      <a href="pages/schools/harleys-rider-training.html" class="listing-card" data-name="Harley's Rider Training" data-area="Gorgie" data-licences="cbt full-a mod">
         <div class="listing-card__image">
           <span class="listing-card__rank">Gorgie</span>
           HRT
@@ -204,8 +204,67 @@
       </a>
 
     </div>
+
+    <p id="search-empty-state" class="text-body-sm" style="display:none; color:var(--text-2); text-align:center; padding:24px 0 0;">No schools match that search. Try clearing the licence filter or searching a different area.</p>
   </div>
 </section>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.listing-card'));
+  var emptyState = document.getElementById('search-empty-state');
+  var heroForm = document.querySelector('.hero-search');
+  var heroInput = document.querySelector('.hero-search__input');
+  var heroSelect = document.querySelector('.hero-search__select');
+  var navInput = document.querySelector('.navbar-search__input');
+  var topSchools = document.getElementById('top-schools');
+
+  var licenceKeys = { 'CBT': 'cbt', 'A1': 'a1', 'A2': 'a2', 'Full A': 'full-a', 'Mod 1 & 2': 'mod' };
+
+  function norm(str) {
+    return (str || '').toLowerCase().trim();
+  }
+
+  function applyFilter(query, licenceLabel) {
+    var q = norm(query);
+    var licenceKey = licenceKeys[licenceLabel] || '';
+    var visibleCount = 0;
+
+    cards.forEach(function (card) {
+      var name = norm(card.dataset.name);
+      var area = norm(card.dataset.area);
+      var licences = (card.dataset.licences || '').split(' ');
+      var matchesText = !q || name.indexOf(q) !== -1 || area.indexOf(q) !== -1;
+      var matchesLicence = !licenceKey || licences.indexOf(licenceKey) !== -1;
+      var visible = matchesText && matchesLicence;
+      card.style.display = visible ? '' : 'none';
+      if (visible) visibleCount++;
+    });
+
+    emptyState.style.display = visibleCount === 0 ? '' : 'none';
+  }
+
+  if (heroForm) {
+    heroForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      applyFilter(heroInput.value, heroSelect.value);
+      topSchools.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  if (navInput) {
+    navInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        heroInput.value = navInput.value;
+        heroSelect.value = 'All licences';
+        applyFilter(navInput.value, 'All licences');
+        topSchools.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  }
+})();
+</script>
 
 <footer class="footer">
   <div class="container footer__grid">

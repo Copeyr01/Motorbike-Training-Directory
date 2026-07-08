@@ -37,10 +37,13 @@
   <div class="container nr-hero__inner">
     <h1 class="display">Get on<br><span class="accent">bikes.</span></h1>
     <p class="nr-hero__sub">Compare every motorbike school in Edinburgh in one search — CBT to Full A, real schools, no spin.</p>
-    <form class="nr-search" id="hero-search-form">
-      <input type="text" id="hero-search-input" placeholder="Search by school name or postcode">
-      <button type="submit">Find training →</button>
-    </form>
+    <div class="nr-search-wrap">
+      <form class="nr-search" id="hero-search-form" autocomplete="off">
+        <input type="text" id="hero-search-input" placeholder="Search by school name, postcode or licence (e.g. CBT)">
+        <button type="submit">Find training →</button>
+      </form>
+      <div class="nr-search-results" id="search-results" hidden></div>
+    </div>
   </div>
 </section>
 
@@ -98,7 +101,7 @@
     <p class="nr-section__desc" id="results-desc">Reviews are just getting started.</p>
 
     <div class="nr-listings" id="listings">
-      <a class="nr-card" href="pages/schools/edinburgh-motorcycle-training.html" data-name="Edinburgh Motorcycle Training" data-area="Straiton" data-licences="cbt full-a">
+      <a class="nr-card" href="pages/schools/edinburgh-motorcycle-training.html" data-name="Edinburgh Motorcycle Training" data-area="Straiton" data-postcode="" data-licences="cbt full-a">
         <div class="nr-card__image">EMT</div>
         <div>
           <h3>Edinburgh Motorcycle Training</h3>
@@ -111,7 +114,7 @@
         <span class="nr-card__cta">View school →</span>
       </a>
 
-      <a class="nr-card" href="pages/schools/two-wheels.html" data-name="Two Wheels Motorcycle Training" data-area="Peffermill" data-licences="cbt a2 full-a">
+      <a class="nr-card" href="pages/schools/two-wheels.html" data-name="Two Wheels Motorcycle Training" data-area="Peffermill" data-postcode="EH16 5LL" data-licences="cbt a2 full-a">
         <div class="nr-card__image">TW</div>
         <div>
           <h3>Two Wheels Motorcycle Training</h3>
@@ -124,7 +127,7 @@
         <span class="nr-card__cta">View school →</span>
       </a>
 
-      <a class="nr-card" href="pages/schools/saltire-motorcycle-training.html" data-name="Saltire Motorcycle Training" data-area="Gorgie" data-licences="cbt full-a">
+      <a class="nr-card" href="pages/schools/saltire-motorcycle-training.html" data-name="Saltire Motorcycle Training" data-area="Gorgie" data-postcode="EH11 3XX" data-licences="cbt full-a">
         <div class="nr-card__image">SMT</div>
         <div>
           <h3>Saltire Motorcycle Training</h3>
@@ -137,7 +140,7 @@
         <span class="nr-card__cta">View school →</span>
       </a>
 
-      <a class="nr-card" href="pages/schools/harleys-rider-training.html" data-name="Harley's Rider Training" data-area="Gorgie" data-licences="cbt full-a mod">
+      <a class="nr-card" href="pages/schools/harleys-rider-training.html" data-name="Harley's Rider Training" data-area="Gorgie" data-postcode="EH11 2RP" data-licences="cbt full-a mod">
         <div class="nr-card__image">HRT</div>
         <div>
           <h3>Harley's Rider Training</h3>
@@ -200,29 +203,114 @@
   var noResults = document.getElementById('no-results');
   var searchForm = document.getElementById('hero-search-form');
   var searchInput = document.getElementById('hero-search-input');
+  var searchResults = document.getElementById('search-results');
+  var searchWrap = document.querySelector('.nr-search-wrap');
   var resultsDesc = document.getElementById('results-desc');
   var activeLicence = '';
 
   function norm(str) { return (str || '').toLowerCase().trim(); }
 
+  // Typing any of these should match a school offering that licence,
+  // not just the exact internal key ("full-a", "mod").
+  var LICENCE_SYNONYMS = {
+    'cbt': 'cbt',
+    'a1': 'a1',
+    'a2': 'a2',
+    'full a': 'full-a',
+    'full-a': 'full-a',
+    'fulla': 'full-a',
+    'das': 'full-a',
+    'direct access': 'full-a',
+    'mod': 'mod',
+    'mod 1': 'mod',
+    'mod 2': 'mod',
+    'mod 1 & 2': 'mod',
+    'mod 1&2': 'mod'
+  };
+
+  function licenceKeyFromQuery(q) {
+    return LICENCE_SYNONYMS[q] || null;
+  }
+
+  function cardMatches(card, q, licenceFilter) {
+    var name = norm(card.dataset.name);
+    var area = norm(card.dataset.area);
+    var postcode = norm(card.dataset.postcode).replace(/\s+/g, '');
+    var licences = (card.dataset.licences || '').split(' ');
+    var qNoSpace = q.replace(/\s+/g, '');
+
+    var queryLicenceKey = licenceKeyFromQuery(q);
+    var matchesText = !q
+      || name.indexOf(q) !== -1
+      || area.indexOf(q) !== -1
+      || (postcode && qNoSpace && postcode.indexOf(qNoSpace) !== -1)
+      || (queryLicenceKey && licences.indexOf(queryLicenceKey) !== -1);
+
+    var matchesLicence = !licenceFilter || licences.indexOf(licenceFilter) !== -1;
+    return matchesText && matchesLicence;
+  }
+
   function applyFilter(query) {
     var q = norm(query);
     var visibleCount = 0;
     cards.forEach(function (card) {
-      var name = norm(card.dataset.name);
-      var area = norm(card.dataset.area);
-      var licences = (card.dataset.licences || '').split(' ');
-      var matchesText = !q || name.indexOf(q) !== -1 || area.indexOf(q) !== -1;
-      var matchesLicence = !activeLicence || licences.indexOf(activeLicence) !== -1;
-      var visible = matchesText && matchesLicence;
+      var visible = cardMatches(card, q, activeLicence);
       card.style.display = visible ? '' : 'none';
       if (visible) visibleCount++;
     });
     noResults.style.display = visibleCount === 0 ? '' : 'none';
   }
 
+  function renderDropdown(query) {
+    var q = norm(query);
+    if (!q) {
+      searchResults.hidden = true;
+      searchResults.innerHTML = '';
+      return;
+    }
+
+    var matches = cards.filter(function (card) { return cardMatches(card, q, activeLicence); });
+
+    if (matches.length === 0) {
+      searchResults.innerHTML = '<div class="nr-search-empty">No schools match "' + query + '". Try a different area, postcode, or licence like CBT.</div>';
+    } else {
+      searchResults.innerHTML = matches.map(function (card) {
+        var badges = (card.dataset.licences || '').split(' ').map(function (l) {
+          return { 'cbt': 'CBT', 'a1': 'A1', 'a2': 'A2', 'full-a': 'Full A', 'mod': 'Mod 1 & 2' }[l] || l.toUpperCase();
+        }).join(' · ');
+        return '<a class="nr-search-result" href="' + card.getAttribute('href') + '">' +
+          '<div>' +
+            '<p class="nr-search-result__name">' + card.dataset.name + '</p>' +
+            '<p class="nr-search-result__meta">' + card.dataset.area + ' · ' + badges + '</p>' +
+          '</div>' +
+          '<span class="nr-search-result__arrow">→</span>' +
+        '</a>';
+      }).join('');
+    }
+    searchResults.hidden = false;
+  }
+
+  searchInput.addEventListener('input', function () {
+    renderDropdown(searchInput.value);
+  });
+
+  searchInput.addEventListener('focus', function () {
+    if (searchInput.value.trim()) renderDropdown(searchInput.value);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!searchWrap.contains(e.target)) {
+      searchResults.hidden = true;
+    }
+  });
+
+  searchInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') searchResults.hidden = true;
+  });
+
   searchForm.addEventListener('submit', function (e) {
     e.preventDefault();
+    searchResults.hidden = true;
     applyFilter(searchInput.value);
     document.getElementById('top-schools').scrollIntoView({ behavior: 'smooth' });
   });

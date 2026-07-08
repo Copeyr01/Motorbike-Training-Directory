@@ -1,9 +1,13 @@
 # GetOnBikes — Design System
 
+**v2 — sharp/premium direction.** Supersedes the original pill-shaped, TripAdvisor-literal system below. Decided through a homepage redesign exercise (see `pages/` once task #11 lands); documents the direction, not yet applied to every page in the repo.
+
 ## Brand
 - **Name:** GetOnBikes
 - **Tagline:** Find the right training. Get on the road.
-- **Positioning:** TripAdvisor-style directory for UK motorbike training. Trusted utility — honest, direct, human.
+- **Homepage hero hook:** "What do you want to ride?" — a direct, conversational question standing in for a marketing headline, mirroring how confident consumer products (e.g. Tripadvisor's "Where to?") let the primary action answer the question rather than describing it in a subtitle.
+- **Positioning:** Edinburgh-first directory for UK motorbike training. The fastest way to compare schools and licences in one place — honest, direct, human.
+- **Primary message:** speed and ease of finding the right training — *not* an anti-monetization pledge. Sponsored placements are a planned revenue stream (see Key decisions) and shouldn't be undercut by the site's own marketing copy.
 
 ---
 
@@ -11,188 +15,127 @@
 
 | Token | Hex | Usage |
 |---|---|---|
-| `--orange` | `#E85D24` | Primary CTA, brand accent, logo highlight |
-| `--orange-dark` | `#c44d1a` | Hover state for orange |
-| `--orange-light` | `#FEF0EA` | Orange tint backgrounds |
-| `--green` | `#00AA6C` | Rating bubbles, trust signals, Riders' Choice badges |
-| `--green-light` | `#E0F5EE` | Green tint backgrounds |
-| `--text` | `#0D0D0D` | Headlines, primary text |
-| `--text-2` | `#4A4A4A` | Body text, descriptions |
-| `--text-3` | `#767676` | Labels, meta, placeholders |
-| `--white` | `#FFFFFF` | Page bg, card bg |
-| `--off` | `#F2F2F2` | Surface bg, fact cards, trust band |
-| `--border` | `#E0E0E0` | Card borders, dividers |
-| `--border-hover` | `#B0B0B0` | Hover border state |
-| `--navy` | `#0f1f3d` | Footer bg, school logo blocks only |
+| `--paper` | `#F7F4EF` | Page background (warm off-white, not pure white) |
+| `--ink` | `#17130F` | Headlines, primary text, primary button fill |
+| `--ink-soft` | `#4A443C` | Body text, descriptions |
+| `--ink-faint` | `#8B8478` | Labels, meta, placeholders, inactive tabs |
+| `--accent` | `#E1461C` | Brand statement colour — big flat blocks, active-tab underline. **Not** the primary button fill (see Key decisions) |
+| `--accent-dark` | `#B93513` | Hover state for accent |
+| `--trust` | `#0B6E4F` | Reserved exclusively for rating/review-trust signals |
+| `--trust-soft` | `#E4F1EC` | Trust tint backgrounds (e.g. "No reviews yet" tag) |
+| `--line` | `#E4DFD2` | Card borders, dividers |
+| `--white` | `#FFFFFF` | Card surfaces sitting on paper |
 
-### Licence badge colours
-| Licence | Background | Text |
+### Licence colour system
+A jewel-tone palette, one hue per licence stage — reserved for **large wayfinding tiles** (the homepage licence grid). Small inline badges on cards/profiles stay neutral (ink-bordered, no fill) so a row of several badges next to a school name doesn't turn into visual noise — colour-coding is for scanning five tiles at a glance, not for decorating every mention of "CBT."
+
+| Licence | Hex | Usage |
 |---|---|---|
-| CBT | `#E8F5E9` | `#1B5E20` |
-| A1 | `#E3F2FD` | `#0D47A1` |
-| A2 | `#FFF8E1` | `#E65100` |
-| Full A | `#FCE4EC` | `#880E4F` |
-| Mod 1 & 2 | `#EEEEEE` | `#333333` |
+| CBT | `#0F5C5C` | Teal — licence tile fill only |
+| A1 | `#1E3A6E` | Navy — licence tile fill only |
+| A2 | `#8A5A0F` | Ochre — licence tile fill only |
+| Full A | `#6E1E3A` | Wine — licence tile fill only |
+| Mod 1 & 2 | `#3A3A32` | Charcoal-olive — licence tile fill only |
 
 ---
 
 ## Typography
 
-**Stack:** `-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif`
+**Display/headings:** Sora, weight 800 (hero, promo headline) or 600 (sub-headings, tab labels, button text). Large and confident — headlines should be big enough that the page needs almost nothing else in the hero.
 
-**Weights used:** 400 (regular), 600 (semibold), 800 (extrabold). No other weights.
+**Body:** `-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif` — unchanged from v1. Body copy doesn't need a custom face; legibility over personality.
 
-| Role | Size | Weight | Tracking | Line height |
-|---|---|---|---|---|
-| Display | `2.25rem` | 800 | `-0.5px` | 1.2 |
-| H1 | `1.75rem` | 800 | `-0.3px` | 1.25 |
-| H2 | `1.375rem` | 700 | — | 1.3 |
-| H3 | `1.125rem` | 700 | — | 1.4 |
-| Body | `1rem` | 400 | — | 1.65 |
-| Body sm | `0.875rem` | 400 | — | 1.6 |
-| Label/eyebrow | `0.6875rem` | 700 | `0.1em` | — |
-| Fine print | `0.75rem` | 400 | — | 1.5 |
+**Data/labels:** IBM Plex Mono, weight 600. Used *only* where something is genuinely tabular or a discrete data point — stat callouts, area/meta labels on cards, licence-tile school counts. Not a decorative accent; if it's not a number or a structured label, it's not mono.
 
 **Rules:**
-- Sentence case everywhere
-- Uppercase only for labels/eyebrows
-- Never use bold (700+) for body copy
+- Sentence case everywhere except licence-tile labels (CBT, A1, A2 etc. — already acronyms/codes)
+- No border-radius on type — headline scale carries the "premium" feeling, not letter-spacing tricks
+- `text-wrap: balance` on large headlines
 
 ---
 
-## Spacing & radius
+## Shape language
 
-| Token | Value | Usage |
-|---|---|---|
-| `--radius-sm` | `4px` | Small badges |
-| `--radius-md` | `8px` | Fact cards, small inputs |
-| `--radius-lg` | `12px` | Rating summary, step tags |
-| `--radius-xl` | `16px` | Cards, content blocks |
-| `--radius-pill` | `100px` | Buttons, tags, search bars, region pills |
+**The single signature motif: one cut corner.** Every filled surface — buttons, the promo block, licence tiles — has exactly one corner cut at an angle (CSS `clip-path`), not rounded. This replaces v1's rule entirely:
 
-**Spacing scale:** 4 / 8 / 12 / 16 / 20 / 24 / 28 / 32 / 40 / 48 / 56 / 64px
+> ~~All interactive elements pill-shaped (`border-radius: 100px`)~~ — **reversed.** No pill shapes, no soft rounded corners anywhere in v2. Sharp edges throughout; the one cut corner is the entire shape vocabulary, used consistently rather than mixing rounded and sharp.
 
----
+Cut size scales with the element — roughly 15–20% of the element's height (a small button might cut ~10px, a full-width promo block might cut ~20–24px). Corner position (top-right vs. bottom-left) varies by component but should stay consistent per component type across the site.
 
-## Shadows
+**Spacing scale:** 4 / 8 / 12 / 16 / 20 / 24 / 28 / 32 / 40 / 48 / 56 / 64px — unchanged from v1.
 
-| Token | Value | Usage |
-|---|---|---|
-| `--shadow-sm` | `0 1px 4px rgba(0,0,0,0.08)` | Navbar |
-| `--shadow-md` | `0 2px 12px rgba(0,0,0,0.10)` | Hero search bar |
-| `--shadow-hover` | `0 4px 20px rgba(0,0,0,0.13)` | Card hover state |
+**Shadows:** Mostly none. v2 is a flat design — depth comes from colour contrast and the cut-corner motif, not soft drop shadows. Reserve `box-shadow` only where a sticky element genuinely needs to separate from scrolling content behind it (e.g. sticky nav on scroll), and keep it minimal (`0 1px 3px rgba(0,0,0,0.06)` at most).
 
 ---
 
 ## Components
 
-### Rating bubble
-Green circle, white bold score. Three sizes.
-```css
-.rating-bubble {
-  border-radius: 50%;
-  background: var(--green);
-  color: #fff;
-  font-weight: 700;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-/* sm: 34×34px / 0.875rem */
-/* md: 44×44px / 1rem    */
-/* lg: 56×56px / 1.25rem */
-```
-
 ### Buttons
-All buttons: pill-shaped (`border-radius: 100px`), `font-weight: 600`, `border: 2px solid`.
+Sharp rectangle, one cut corner (top-right by default). No border-radius.
 
-| Variant | Background | Text | Border |
+| Variant | Background | Text | Usage |
 |---|---|---|---|
-| Primary | `--orange` | `#fff` | `--orange` |
-| Green | `--green` | `#fff` | `--green` |
-| Outline | transparent | `--text` | `--text` |
-| Ghost | transparent | `--text-2` | `--border` |
+| Primary (ink) | `--ink` | `--paper` | **The single primary action on any given page** — see Key decisions. Currently: the search button. |
+| Outline | transparent, `2px solid --ink` | `--ink` | Secondary actions |
+| Quiet link | transparent, no border | `--ink-soft`, underline on hover | Everything else (nav links, "List your school", card CTAs) |
 
-Sizes: default `padding: 11px 22px / 0.9375rem`, sm `padding: 8px 16px / 0.875rem`
+Do not use `--accent` as a button fill. It's a brand/statement colour, not an action colour.
 
-### Listing card
-Horizontal grid: `200px image | 1fr content`. Border-radius `--radius-xl`. Hover: `--shadow-hover` + `--border-hover`.
+### Hero
+Eyebrow and subtitle are gone. Structure: huge headline (Sora 800, ~5rem+) → licence-type tabs (text tabs, active state = ink text + accent underline) → one sharp-cornered search bar (thick ink border, ink-filled button). No stat row in the hero — stats live in the promo block instead, so the hero stays a single uncluttered moment.
 
-Image block: dark gradient bg (`#1a2e4a → #0f1f3d`), school initials centred.
-Rank badge: top-left, dark semi-transparent pill.
-Riders' Choice badge: bottom-left, green pill.
-Rating bubble: top-right of content area.
+### Promo block
+Full-bleed `--accent` background, one cut corner (bottom-left). Bold headline (Sora 800, white) pitching speed/comprehensiveness — not the rankings pledge. Supporting sentence beneath. Stats presented as a mono-numeral column (not squeezed into the hero), each with a one-line caption. No button in this block — it's a trust/statement moment, not a second competing CTA.
 
-### Licence badges
-Pill-shaped (`--radius-pill`), `font-size: 0.6875rem`, `font-weight: 600`. Colours per table above.
+### Licence tile grid
+Five full-bleed tiles (one per licence stage), solid colour per the licence colour system above, cut corner (top-right), label + one-line description + count in Plex Mono, all in white text bottom-aligned. Replaces v1's white card + badge + count-text pattern entirely — this is the site's answer to a photography-led category grid, using flat colour instead of stock imagery we don't have yet.
 
-### Tags (course/feature tags)
-`background: --off`, `border: 1px solid --border`, `border-radius: --radius-pill`, `font-size: 0.75rem`, `color: --text-2`.
+### Coverage strip
+A single quiet line ("Now live in Edinburgh — more UK cities coming as we grow"), ink-bordered, no fill. Replaces v1's dedicated "Popular regions" section — a whole section for one city read as boilerplate.
 
-### Search bar (hero)
-`border: 2px solid --text`, `border-radius: --radius-pill`, height `52px`.
-Sections: text input (flex:1) | select (min-width 140px, border-left) | submit button (orange, pill, margin 5px).
+### Listing cards
+Flat white cards on `--line`-coloured gaps (no border-radius, no shadow). Area/meta label in Plex Mono with a short accent-coloured rule to the left. School name in Sora 600. Licence badges stay neutral (ink border, no fill — see Licence colour system). "No reviews yet" tag uses `--trust-soft`/`--trust` — the only place colour signals trust, kept separate from the accent.
 
-### Navbar search
-`background: --off`, `border: 1px solid --border`, `border-radius: --radius-pill`, height `42px`.
-Focus ring: `box-shadow: 0 0 0 3px rgba(232,93,36,0.1)`.
-
-### Content cards
-`background: --white`, `border: 1px solid --border`, `border-radius: --radius-xl`, `padding: 24px`.
-Title: `font-size: 1.125rem / 700`, `padding-bottom: 14px`, `border-bottom: 1px solid --border`.
-
-### Sidebar cards
-Same as content card but `padding: 20px`. Title `font-size: 0.9375rem`.
+### Nav
+Logo (Sora 800) | text links (Licence guides / Regions / Reviews) | "List your school" as a plain quiet link, same weight as the other nav links — **not** a filled button. Schools are a secondary audience reached through outreach, not a self-serve homepage funnel; the nav shouldn't visually compete with the hero's one real CTA.
 
 ---
 
 ## Layout
 
 ### Grid
-Max-width container: `1160px`, `padding: 0 24px`.
+Max-width container: `1180px`, `padding: 0 32px`.
 
-### Two-column page layout
-`grid-template-columns: 1fr 280px`, `gap: 24px`.
-Collapses to single column at `960px`.
+### Two-column page layout (school profile pages)
+`grid-template-columns: 1fr 280px`, `gap: 24px` — unchanged from v1 pending task #11.
 
-### Listing cards
-Single column, `gap: 12px`, full container width.
+### Licence tile grid
+`grid-template-columns: repeat(5, 1fr)`, `gap: 2px` (the gap shows `--line`, giving hairline separation without borders). Collapses to `repeat(3, 1fr)` at `≤1000px`.
 
-### Licence cards
-`grid-template-columns: repeat(auto-fill, minmax(155px, 1fr))`, `gap: 10px`.
-
-### Region pills
-`display: flex; flex-wrap: wrap; gap: 8px`.
-
-### Trust band
-`grid-template-columns: repeat(4, 1fr)`. Collapses to 2-col at `960px`.
+### Listings
+Single column, `gap: 2px` on a `--line` background (same hairline-separation technique as the tile grid).
 
 ---
 
 ## Page structure
 
-### Navbar (sticky, z-index 100)
-`height: 64px` | logo left | pill search centre | nav links | orange CTA right.
+### Navbar
+Logo left | text nav links | "List your school" as a quiet text link far right (no filled button in the nav — see Components).
 
 ### Hero
-White bg, `padding: 56px 0 44px`, `border-bottom: 1px solid --border`.
-Eyebrow → H1 → subtitle → hero search bar → trust stats row.
+`--paper` background. Huge headline → licence tabs → search bar. No eyebrow, no subtitle, no stat row.
 
-### Trust band
-`background: --off`, `border-bottom: 1px solid --border`, `padding: 20px 0`.
+### Promo block
+Full-bleed `--accent`, cut bottom-left corner. Sits directly under the hero, before any other section.
 
-### Breadcrumb
-`background: --white`, `border-bottom: 1px solid --border`, `padding: 12px 0`, `font-size: 0.8125rem`.
+### Licence tile grid
+Directly below the promo block. Section label ("Find training for your licence") kept small/quiet — the tiles do the work.
 
-### School hero band
-`background: --white`, `border-bottom: 1px solid --border`, `padding: 28px 0`.
-Logo block (64px, navy gradient, border-radius xl) | name + meta + badges | score block right.
-
-### Page wrap (content area)
-`background: --off`, `padding: 28px 0 64px`.
+### Coverage strip + listings
+Quiet coverage line, then the real school listings, flat cards on hairline `--line` gaps.
 
 ### Footer
-`background: --navy`, 4-col grid, `padding: 48px 0 28px`.
+Unchanged structurally from v1 (4-col grid, navy background) pending task #11 — copy updated to match the new positioning (see Tone of voice).
 
 ---
 
@@ -200,8 +143,9 @@ Logo block (64px, navy gradient, border-radius xl) | name + meta + badges | scor
 
 | Breakpoint | Behaviour |
 |---|---|
-| `≤ 960px` | Page layout → 1 col. Trust band → 2 col. Footer → 2 col. |
-| `≤ 700px` | Nav links hidden. Nav search hidden. Listing card → 1 col. Hero search stacks. Footer → 1 col. |
+| `≤ 1000px` | Licence tile grid → 3 col. Promo block → 1 col (stats stack under headline). |
+| `≤ 960px` | School profile two-column layout → 1 col. |
+| `≤ 700px` | Nav links hidden. Listing cards → 1 col. Hero headline scales down (~3.2rem). |
 
 ---
 
@@ -211,12 +155,14 @@ Logo block (64px, navy gradient, border-radius xl) | name + meta + badges | scor
 - Human — knowledgeable friend, not comparison-site robot
 - Active voice always
 - Sentence case, plain English
+- Lead with speed/ease of finding training, not platform ethics — the anti-monetization pledge is real but belongs in the small print (Terms of Use), not the headline
 
-**Do:** "Find the right training. Get on the road."
-**Do:** "Rankings are never for sale."
+**Do:** "What do you want to ride?"
+**Do:** "Every Edinburgh school. One search."
 **Do:** "Help other riders make the right choice."
 **Don't:** "Empowering motorcyclists to achieve their licence goals."
 **Don't:** "Leveraging a best-in-class review ecosystem."
+**Don't (anymore):** leading with "Rankings are never for sale" as the hero/promo headline — true, but it's a policy footnote now, not the pitch.
 
 ---
 
@@ -241,11 +187,19 @@ getonbikes/
 
 ## Key decisions
 
-- Rankings are review-driven and never for sale. Sponsored listings, if introduced, are a clearly labeled unit shown separately from the ranked list — they never alter rank order or displace a school based on payment.
-- Stars replaced with green rating bubbles (TripAdvisor-style)
-- Orange used exclusively for CTAs and brand — never for ratings or trust signals
-- Green used exclusively for ratings and trust — never for CTAs
-- No dark hero sections — white/off-white throughout, navy only in footer and school logo blocks
-- All interactive elements pill-shaped (`border-radius: 100px`)
-- Review excerpts surfaced on listing cards, not just scores
-- Rank numbers (#1 in Edinburgh) on listing card image blocks
+- **One primary CTA per page, and only one.** The homepage's single filled, ink-coloured button is the search action. Everything else — "List your school," card links, tile navigation — stays visually quiet. Multiple competing bold elements read as no hierarchy at all.
+- **Riders first.** GetOnBikes' core job is helping a rider find the right training fast. Schools are a real but secondary audience, onboarded through direct outreach (not a self-serve homepage funnel) — so the nav CTA for schools stays a plain link, never a bold button competing with the rider-facing search.
+- **Sponsored placements are planned, and the marketing shouldn't contradict that.** Organic rank stays review-driven and is never sold — that policy still exists (see Terms of Use) — but it's no longer the headline pitch, since leading with an anti-monetization pledge undercuts pitching schools on paid placement later. When sponsored slots ship, they must be clearly labeled and separate from organic rank, never blended into it.
+- Licence colour-coding lives on the large wayfinding tiles only — inline badges on cards/profiles stay neutral to avoid visual noise.
+- No pill shapes, no rounded corners anywhere — one consistent cut-corner motif instead.
+- Flat design — colour and contrast create hierarchy, not drop shadows.
+
+---
+
+## Open items for task #11 (applying this across the site)
+
+This document captures the homepage direction. Not yet decided/extended:
+- School profile pages (breadcrumb, sidebar cards, school-hero band) haven't been redesigned in the cut-corner language yet — v1's rounded treatment is still live there.
+- Legal pages (Privacy/Terms/Cookie) and the licence guide page are still on the v1 pill-shaped system.
+- Dark mode was not considered for v2 — this is a light-only direction so far.
+- Mobile nav (hamburger/collapse behaviour) wasn't designed; v1 just hides nav links under 700px, which may not be adequate long-term.

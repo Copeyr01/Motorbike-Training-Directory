@@ -106,6 +106,7 @@
         <div>
           <h3>Edinburgh Motorcycle Training</h3>
           <p class="nr-card__meta">Straiton — independent school, CBT and full licence (DAS) training, on and off-road.</p>
+          <p class="nr-card__distance" hidden></p>
           <div class="nr-card__badges">
             <span class="nr-badge">CBT</span><span class="nr-badge">Full A</span>
             <span class="nr-badge nr-badge--no-reviews">No reviews yet</span>
@@ -119,6 +120,7 @@
         <div>
           <h3>Two Wheels Motorcycle Training</h3>
           <p class="nr-card__meta">Peffermill — Honda Approved School of Motorcycling, training riders since 1991.</p>
+          <p class="nr-card__distance" hidden></p>
           <div class="nr-card__badges">
             <span class="nr-badge">CBT</span><span class="nr-badge">A2</span><span class="nr-badge">Full A</span>
             <span class="nr-badge nr-badge--no-reviews">No reviews yet</span>
@@ -132,6 +134,7 @@
         <div>
           <h3>Saltire Motorcycle Training</h3>
           <p class="nr-card__meta">Gorgie — CBT and full licence training. Bike hire and kit included.</p>
+          <p class="nr-card__distance" hidden></p>
           <div class="nr-card__badges">
             <span class="nr-badge">CBT</span><span class="nr-badge">Full A</span>
             <span class="nr-badge nr-badge--no-reviews">No reviews yet</span>
@@ -145,6 +148,7 @@
         <div>
           <h3>Harley's Rider Training</h3>
           <p class="nr-card__meta">Gorgie — family-run, CBT, full licence training and Mod 1 &amp; 2 test prep since 1997.</p>
+          <p class="nr-card__distance" hidden></p>
           <div class="nr-card__badges">
             <span class="nr-badge">CBT</span><span class="nr-badge">Full A</span><span class="nr-badge">Mod 1 &amp; 2</span>
             <span class="nr-badge nr-badge--no-reviews">No reviews yet</span>
@@ -206,6 +210,7 @@
   var searchResults = document.getElementById('search-results');
   var searchWrap = document.querySelector('.nr-search-wrap');
   var resultsDesc = document.getElementById('results-desc');
+  var listings = document.getElementById('listings');
   var activeLicence = '';
 
   function norm(str) { return (str || '').toLowerCase().trim(); }
@@ -232,6 +237,73 @@
     return LICENCE_SYNONYMS[q] || null;
   }
 
+  // ------------------------------------------------------------------
+  // Postcode distance: geocode via postcodes.io (free, no key, UK-only)
+  // and compute straight-line distance client-side. Cached per postcode
+  // so repeated searches don't re-fetch. Schools with no confirmed
+  // postcode (data-postcode="") are never geocoded — they show "distance
+  // unavailable" rather than a guessed figure.
+  // ------------------------------------------------------------------
+  var FULL_POSTCODE_RE = /^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}$/i;
+  var OUTCODE_RE = /^[a-z]{1,2}\d[a-z\d]?$/i;
+  var geocodeCache = {};
+
+  function isPostcodeLike(q) {
+    var t = q.trim();
+    return FULL_POSTCODE_RE.test(t) || OUTCODE_RE.test(t);
+  }
+
+  function geocode(rawQuery) {
+    var q = rawQuery.trim();
+    var key = norm(q).replace(/\s+/g, '');
+    if (geocodeCache[key]) return Promise.resolve(geocodeCache[key]);
+
+    var isFull = FULL_POSTCODE_RE.test(q);
+    var endpoint = isFull
+      ? 'https://api.postcodes.io/postcodes/' + encodeURIComponent(q)
+      : 'https://api.postcodes.io/outcodes/' + encodeURIComponent(q);
+
+    return fetch(endpoint)
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (data.status !== 200 || !data.result) return null;
+        var coords = { lat: data.result.latitude, lng: data.result.longitude };
+        geocodeCache[key] = coords;
+        return coords;
+      })
+      .catch(function () { return null; });
+  }
+
+  function haversineMiles(a, b) {
+    var R = 3958.8;
+    var dLat = (b.lat - a.lat) * Math.PI / 180;
+    var dLng = (b.lng - a.lng) * Math.PI / 180;
+    var lat1 = a.lat * Math.PI / 180;
+    var lat2 = b.lat * Math.PI / 180;
+    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+    return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  }
+
+  // Distances from the last successfully geocoded search, keyed by
+  // card element. Cleared whenever the query stops being postcode-like.
+  var distanceByCard = null;
+
+  function computeDistances(originCoords) {
+    var work = cards.map(function (card) {
+      var postcode = (card.dataset.postcode || '').trim();
+      if (!postcode) return Promise.resolve([card, null]);
+      return geocode(postcode).then(function (coords) {
+        return [card, coords ? haversineMiles(originCoords, coords) : null];
+      });
+    });
+    return Promise.all(work).then(function (pairs) {
+      var map = new Map();
+      pairs.forEach(function (pair) { map.set(pair[0], pair[1]); });
+      return map;
+    });
+  }
+
   function cardMatches(card, q, licenceFilter) {
     var name = norm(card.dataset.name);
     var area = norm(card.dataset.area);
@@ -244,16 +316,52 @@
       || name.indexOf(q) !== -1
       || area.indexOf(q) !== -1
       || (postcode && qNoSpace && postcode.indexOf(qNoSpace) !== -1)
-      || (queryLicenceKey && licences.indexOf(queryLicenceKey) !== -1);
+      || (queryLicenceKey && licences.indexOf(queryLicenceKey) !== -1)
+      || isPostcodeLike(q); // postcode-like queries are resolved by distance, not text match
 
     var matchesLicence = !licenceFilter || licences.indexOf(licenceFilter) !== -1;
     return matchesText && matchesLicence;
   }
 
+  function distanceLabel(miles) {
+    if (miles === null || miles === undefined) return { text: 'Distance unavailable', unavailable: true };
+    if (miles < 0.1) return { text: 'Less than 0.1 mi away', unavailable: false };
+    return { text: miles.toFixed(1) + ' mi away', unavailable: false };
+  }
+
+  function renderCardDistances() {
+    cards.forEach(function (card) {
+      var el = card.querySelector('.nr-card__distance');
+      if (!distanceByCard) {
+        el.hidden = true;
+        return;
+      }
+      var miles = distanceByCard.get(card);
+      var label = distanceLabel(miles);
+      el.textContent = label.text;
+      el.classList.toggle('nr-card__distance--unavailable', label.unavailable);
+      el.hidden = false;
+    });
+  }
+
+  function sortByDistance(list) {
+    if (!distanceByCard) return list;
+    return list.slice().sort(function (a, b) {
+      var da = distanceByCard.get(a);
+      var db = distanceByCard.get(b);
+      if (da === null || da === undefined) return db === null || db === undefined ? 0 : 1;
+      if (db === null || db === undefined) return -1;
+      return da - db;
+    });
+  }
+
   function applyFilter(query) {
     var q = norm(query);
+    var ordered = sortByDistance(cards);
+    ordered.forEach(function (card) { listings.appendChild(card); });
+
     var visibleCount = 0;
-    cards.forEach(function (card) {
+    ordered.forEach(function (card) {
       var visible = cardMatches(card, q, activeLicence);
       card.style.display = visible ? '' : 'none';
       if (visible) visibleCount++;
@@ -269,7 +377,7 @@
       return;
     }
 
-    var matches = cards.filter(function (card) { return cardMatches(card, q, activeLicence); });
+    var matches = sortByDistance(cards.filter(function (card) { return cardMatches(card, q, activeLicence); }));
 
     if (matches.length === 0) {
       searchResults.innerHTML = '<div class="nr-search-empty">No schools match "' + query + '". Try a different area, postcode, or licence like CBT.</div>';
@@ -278,10 +386,15 @@
         var badges = (card.dataset.licences || '').split(' ').map(function (l) {
           return { 'cbt': 'CBT', 'a1': 'A1', 'a2': 'A2', 'full-a': 'Full A', 'mod': 'Mod 1 & 2' }[l] || l.toUpperCase();
         }).join(' · ');
+        var meta = card.dataset.area + ' · ' + badges;
+        if (distanceByCard) {
+          var label = distanceLabel(distanceByCard.get(card));
+          meta = label.text + ' · ' + meta;
+        }
         return '<a class="nr-search-result" href="' + card.getAttribute('href') + '">' +
           '<div>' +
             '<p class="nr-search-result__name">' + card.dataset.name + '</p>' +
-            '<p class="nr-search-result__meta">' + card.dataset.area + ' · ' + badges + '</p>' +
+            '<p class="nr-search-result__meta">' + meta + '</p>' +
           '</div>' +
           '<span class="nr-search-result__arrow">→</span>' +
         '</a>';
@@ -290,8 +403,49 @@
     searchResults.hidden = false;
   }
 
+  function handleQuery(query, opts) {
+    var scroll = opts && opts.scroll;
+    var q = query.trim();
+
+    if (!isPostcodeLike(q)) {
+      distanceByCard = null;
+      renderCardDistances();
+      renderDropdown(query);
+      if (scroll) {
+        applyFilter(query);
+        document.getElementById('top-schools').scrollIntoView({ behavior: 'smooth' });
+      }
+      return;
+    }
+
+    searchResults.innerHTML = '<div class="nr-search-empty">Finding schools near ' + q + '…</div>';
+    searchResults.hidden = false;
+
+    geocode(q).then(function (origin) {
+      if (searchInput.value.trim() !== q) return; // input changed while we were waiting
+      if (!origin) {
+        distanceByCard = null;
+        renderCardDistances();
+        searchResults.innerHTML = '<div class="nr-search-empty">"' + query + '" doesn\'t look like a valid UK postcode. Try a full postcode (EH11 3XX) or area code (EH11).</div>';
+        searchResults.hidden = false;
+        if (scroll) applyFilter(query);
+        return;
+      }
+      computeDistances(origin).then(function (map) {
+        if (searchInput.value.trim() !== q) return;
+        distanceByCard = map;
+        renderCardDistances();
+        renderDropdown(query);
+        if (scroll) {
+          applyFilter(query);
+          document.getElementById('top-schools').scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  }
+
   searchInput.addEventListener('input', function () {
-    renderDropdown(searchInput.value);
+    handleQuery(searchInput.value, { scroll: false });
   });
 
   searchInput.addEventListener('focus', function () {
@@ -311,8 +465,7 @@
   searchForm.addEventListener('submit', function (e) {
     e.preventDefault();
     searchResults.hidden = true;
-    applyFilter(searchInput.value);
-    document.getElementById('top-schools').scrollIntoView({ behavior: 'smooth' });
+    handleQuery(searchInput.value, { scroll: true });
   });
 
   chips.forEach(function (chip) {

@@ -338,6 +338,14 @@ img { max-width: 100%; display: block; }
   color: var(--text-mute);
   margin: 0 0 10px;
 }
+.nr-card__distance {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 0.8125rem;
+  color: var(--accent);
+  margin: -4px 0 10px;
+}
+.nr-card__distance--unavailable { color: var(--text-mute); font-weight: 400; }
 .nr-card__badges { display: flex; gap: 8px; flex-wrap: wrap; }
 .nr-badge {
   font-family: "Space Grotesk", sans-serif;

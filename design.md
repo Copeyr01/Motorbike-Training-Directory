@@ -54,7 +54,7 @@ Square corners, flat surfaces, everywhere:
 ## Components
 
 ### Nav
-Sticky white bar, plain-text wordmark, a school-search box, quiet text links (licence guides / regions / reviews), and "List your school" as a small **outlined** square button — a secondary action, not filled, since schools are onboarded via outreach rather than a self-serve funnel.
+Sticky white bar, plain-text wordmark, a school-search box, quiet text links (licence guides / regions / reviews) — no "List your school" CTA here. It was removed from the persistent nav (visible on every pageview, for every rider) since the site is riders-first and schools are onboarded via outreach, not a self-serve funnel; it remains, once, in the footer's Company column, which is also where the mobile nav-search-disappearing fix came from — with the button gone, logo + search fit on a phone screen without overflowing.
 
 ### Hero
 White background, gray eyebrow label, plain heading + subtitle, then the primary action — two underlined text links (not boxed tabs, so they read as quiet mode-switches rather than competing with the actual form fields below them) above a search control, both on one row:

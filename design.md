@@ -57,10 +57,14 @@ Square corners, flat surfaces, everywhere:
 Sticky white bar, plain-text wordmark, a school-search box, quiet text links (licence guides / regions / reviews), and "List your school" as a small **outlined** square button — a secondary action, not filled, since schools are onboarded via outreach rather than a self-serve funnel.
 
 ### Hero
-White background, gray eyebrow label, plain heading + subtitle, then the one primary action: a square-cornered search bar (text input + licence dropdown + filled black submit button) with a live results dropdown beneath it. A single row of plain stats sits under the search (schools listed / licence types covered / reviews so far).
+White background, gray eyebrow label, plain heading + subtitle, then the primary action — two tabs above a search control:
+- **"Find by licence"** (default): a row of 4 licence pills (CBT / A1 / A2 / Full A, single-select) + an optional postcode field + one "Find schools" submit. Postcode is optional — licence alone filters the list below; adding a postcode also sorts it nearest-first and shows a distance line per card. An inline error appears under the field for anything that doesn't look like a UK postcode, rather than silently failing.
+- **"Search by School"**: a single name-search input with a live results dropdown, for the minority of visitors who already know which school they want. Demoted relative to the licence tab since most visitors don't yet know which school they're looking for — that's the problem the site exists to solve.
+
+Both tabs filter/sort the same "Edinburgh training schools" list below rather than rendering a separate results view. The top-nav search box is a shortcut into the "Search by School" tab.
 
 ### Licence chip / card row
-Five equal cards (CBT / A1 / A2 / Full A / Mod 1 & 2), each a plain outlined licence-code box + short description + school count, linking into the licence guide.
+Four cards (CBT / A1 / A2 / Full A — not five), each a plain outlined licence-code box + short description + school count, linking into the licence guide. A note beneath the grid explains that Mod 1 & 2 isn't a fifth licence — it's the shared two-part practical test for A1/A2/Full A — and links to that explainer instead of presenting it as a peer option.
 
 ### Listing cards
 White rows, square corners, 1px black border. Flat black placeholder image tile (initials) left, school name + short description + plain licence badges + tags, honest "No reviews yet" tag rather than a fabricated rating. A live distance line appears once a postcode search has resolved ("2.3 mi away" / "Distance unavailable" for schools without a confirmed postcode — never a guessed figure). Hover tints the row background, no shadow.
@@ -92,6 +96,8 @@ Black panel, 4-column grid: wordmark + one-line description, then Licences / Com
 - **Legacy token names kept, values changed.** Rather than touch every inline `style="color:var(--orange)"` across school/legal pages, the `--orange`/`--green` tokens were repointed to grayscale values instead of renamed — same effect, smaller diff.
 - **No fake ratings, no fake distances.** A school with zero reviews says so plainly. A school without a confirmed postcode shows "Distance unavailable" rather than an invented number.
 - **Rebrand:** GetOnBikes → Upshift. All visible brand text, wordmarks, and contact email updated; the live site still deploys from `getonbikes.vercel.app` (domain migration is separate infrastructure work, not yet done).
+- **Licence, not licence-plus-test, is the pickable unit.** CBT, A1, A2 and Full A are real, separate licence categories. Mod 1 & 2 is the practical test shared by A1/A2/Full A, not a fifth parallel licence — so it's a note/tag, not a peer filter option, in both the hero picker and the homepage licence-info grid. `licence-guide.html`'s own top-of-page anchor row still lists it as a 5th jump-link, since that's in-page navigation to a section that genuinely exists there, not a claim of peer status — worth revisiting for consistency later.
+- **Guided search over freeform.** The homepage's single combined text box (name/postcode/licence keyword all mixed) was replaced by two explicit modes — pick a licence (+ optional postcode) or search a school by name — since most visitors don't know a school name yet and shouldn't have to guess the right free-text syntax to get a useful result.
 
 ---
 

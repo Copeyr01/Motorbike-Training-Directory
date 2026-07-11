@@ -77,6 +77,7 @@
   .search-empty { padding: 16px 18px; font-size: 0.875rem; color: var(--text-3); }
   .card-distance { font-size: 0.8125rem; color: var(--green); font-weight: 600; margin: 4px 0 0; }
   .card-distance--unavailable { color: var(--text-3); font-weight: 400; }
+  .card-price { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2px 0 0; }
 </style>
 </head>
 <body>
@@ -197,7 +198,7 @@
 
     <div class="listing-list" id="listings">
 
-      <a href="pages/schools/edinburgh-motorcycle-training.html" class="listing-card" data-name="Edinburgh Motorcycle Training" data-area="Straiton" data-postcode="" data-licences="cbt full-a">
+      <a href="pages/schools/edinburgh-motorcycle-training.html" class="listing-card" data-name="Edinburgh Motorcycle Training" data-area="Straiton" data-postcode="" data-licences="cbt full-a" data-price-cbt="99" data-price-full-a="699">
         <div class="listing-card__image">
           <span class="listing-card__rank">Straiton</span>
           EMT
@@ -205,6 +206,7 @@
         <div class="listing-card__content">
           <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
           <h3>Edinburgh Motorcycle Training</h3>
+          <p class="card-price"></p>
           <p class="text-body-sm" style="color:var(--text-2)">Independent motorcycle school in Straiton offering CBT and full licence (DAS) training, on and off-road.</p>
           <p class="card-distance" hidden></p>
           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
@@ -215,7 +217,7 @@
         </div>
       </a>
 
-      <a href="pages/schools/two-wheels.html" class="listing-card" data-name="Two Wheels Motorcycle Training" data-area="Peffermill" data-postcode="EH16 5LL" data-licences="cbt a2 full-a">
+      <a href="pages/schools/two-wheels.html" class="listing-card" data-name="Two Wheels Motorcycle Training" data-area="Peffermill" data-postcode="EH16 5LL" data-licences="cbt a2 full-a" data-price-cbt="89" data-price-a2="649" data-price-full-a="749">
         <div class="listing-card__image">
           <span class="listing-card__rank">Peffermill</span>
           TW
@@ -223,6 +225,7 @@
         <div class="listing-card__content">
           <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
           <h3>Two Wheels Motorcycle Training</h3>
+          <p class="card-price"></p>
           <p class="text-body-sm" style="color:var(--text-2)">Honda Approved School of Motorcycling, training riders across Edinburgh and the Lothians since 1991.</p>
           <p class="card-distance" hidden></p>
           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
@@ -234,7 +237,7 @@
         </div>
       </a>
 
-      <a href="pages/schools/saltire-motorcycle-training.html" class="listing-card" data-name="Saltire Motorcycle Training" data-area="Gorgie" data-postcode="EH11 3XX" data-licences="cbt full-a">
+      <a href="pages/schools/saltire-motorcycle-training.html" class="listing-card" data-name="Saltire Motorcycle Training" data-area="Gorgie" data-postcode="EH11 3XX" data-licences="cbt full-a" data-price-cbt="109" data-price-full-a="729">
         <div class="listing-card__image">
           <span class="listing-card__rank">Gorgie</span>
           SMT
@@ -242,6 +245,7 @@
         <div class="listing-card__content">
           <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
           <h3>Saltire Motorcycle Training</h3>
+          <p class="card-price"></p>
           <p class="text-body-sm" style="color:var(--text-2)">CBT and full licence training with an off-road site in Saughton. Bike hire and protective equipment included.</p>
           <p class="card-distance" hidden></p>
           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
@@ -253,7 +257,7 @@
         </div>
       </a>
 
-      <a href="pages/schools/harleys-rider-training.html" class="listing-card" data-name="Harley's Rider Training" data-area="Gorgie" data-postcode="EH11 2RP" data-licences="cbt full-a">
+      <a href="pages/schools/harleys-rider-training.html" class="listing-card" data-name="Harley's Rider Training" data-area="Gorgie" data-postcode="EH11 2RP" data-licences="cbt full-a" data-price-cbt="95" data-price-full-a="719">
         <div class="listing-card__image">
           <span class="listing-card__rank">Gorgie</span>
           HRT
@@ -261,6 +265,7 @@
         <div class="listing-card__content">
           <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
           <h3>Harley's Rider Training</h3>
+          <p class="card-price"></p>
           <p class="text-body-sm" style="color:var(--text-2)">Family-run school in Gorgie providing CBT, full licence training and Mod 1 &amp; 2 test preparation since 1997.</p>
           <p class="card-distance" hidden></p>
           <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
@@ -341,6 +346,30 @@
   function norm(str) { return (str || '').toLowerCase().trim(); }
 
   var LICENCE_LABELS = { 'cbt': 'CBT', 'a1': 'A1', 'a2': 'A2', 'full-a': 'Full A' };
+  var PRICE_KEYS = { 'cbt': 'priceCbt', 'a1': 'priceA1', 'a2': 'priceA2', 'full-a': 'priceFullA' };
+
+  // Prices per licence, per school. "Prices from £X" (lowest across whatever
+  // that school offers) by default; switches to the exact figure for a
+  // specific licence once that's what's being searched.
+  function licencePrices(card) {
+    return ['cbt', 'a1', 'a2', 'full-a'].map(function (l) {
+      var raw = card.dataset[PRICE_KEYS[l]];
+      return raw ? { licence: l, price: parseInt(raw, 10) } : null;
+    }).filter(Boolean);
+  }
+
+  function priceLabel(card) {
+    var prices = licencePrices(card);
+    if (prices.length === 0) return null;
+
+    if (currentMode === 'licence' && currentLicence) {
+      var match = prices.filter(function (p) { return p.licence === currentLicence; })[0];
+      if (match) return LICENCE_LABELS[currentLicence] + ' — £' + match.price;
+    }
+
+    var min = Math.min.apply(null, prices.map(function (p) { return p.price; }));
+    return 'Prices from £' + min;
+  }
 
   // ------------------------------------------------------------------
   // Postcode distance: geocode via postcodes.io (free, no key, UK-only)
@@ -463,6 +492,15 @@
     return true;
   }
 
+  function renderCardPrices() {
+    cards.forEach(function (card) {
+      var el = card.querySelector('.card-price');
+      var label = priceLabel(card);
+      el.textContent = label || '';
+      el.hidden = !label;
+    });
+  }
+
   function renderListings() {
     var ordered = sortByDistance(cards);
     ordered.forEach(function (card) { listings.appendChild(card); });
@@ -474,6 +512,7 @@
       if (visible) visibleCount++;
     });
     noResults.style.display = visibleCount === 0 ? '' : 'none';
+    renderCardPrices();
   }
 
   function renderSchoolDropdown(query) {
@@ -496,6 +535,8 @@
           return LICENCE_LABELS[l] || l.toUpperCase();
         }).join(' · ');
         var meta = card.dataset.area + ' · ' + badges;
+        var price = priceLabel(card);
+        if (price) meta = price + ' · ' + meta;
         if (distanceByCard) {
           var label = distanceLabel(distanceByCard.get(card));
           meta = label.text + ' · ' + meta;
@@ -627,6 +668,8 @@
       }
     });
   }
+
+  renderCardPrices(); // show "Prices from £X" immediately, before any search
 })();
 </script>
 

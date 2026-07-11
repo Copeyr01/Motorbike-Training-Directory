@@ -67,7 +67,9 @@ Both modes filter/sort the same "Edinburgh training schools" list below rather t
 Four cards (CBT / A1 / A2 / Full A — not five), each a plain outlined licence-code box + short description + school count, linking into the licence guide. A note beneath the grid explains that Mod 1 & 2 isn't a fifth licence — it's the shared two-part practical test for A1/A2/Full A — and links to that explainer instead of presenting it as a peer option.
 
 ### Listing cards
-White rows, square corners, 1px black border. Flat black placeholder image tile (initials) left, school name + short description + plain licence badges + tags, honest "No reviews yet" tag rather than a fabricated rating. A live distance line appears once a postcode search has resolved ("2.3 mi away" / "Distance unavailable" for schools without a confirmed postcode — never a guessed figure). Hover tints the row background, no shadow.
+White rows, square corners, 1px black border. Flat black placeholder image tile (initials) left, school name, then a bold price line, then a short description + plain licence badges + tags, honest "No reviews yet" tag rather than a fabricated rating. A live distance line appears once a postcode search has resolved ("2.3 mi away" / "Distance unavailable" for schools without a confirmed postcode — never a guessed figure). Hover tints the row background, no shadow.
+
+**Pricing:** stored per school, per licence (`data-price-cbt`, `data-price-a2`, `data-price-full-a`, etc.) since one school's CBT and Full A courses cost different amounts. Cards show "Prices from £X" (the lowest figure across whatever that school offers) by default, switching to the exact price for the specific licence once "Search by Licence" is used with one selected. **These are placeholder figures, not real prices** — deliberately made to look like normal numbers (no "estimated" label) since the site is password-gated pre-launch; task #9 covers getting real pricing from each school before the gate comes off.
 
 ### Footer
 Black panel, 4-column grid: wordmark + one-line description, then Licences / Company / Legal link columns, copyright bar beneath.

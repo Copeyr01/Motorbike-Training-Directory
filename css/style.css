@@ -591,10 +591,31 @@ p,
 }
 
 .navbar__inner {
+  position: relative;
   height: 100%;
   display: flex;
   align-items: center;
   gap: 24px;
+}
+
+.navbar__toggle-checkbox {
+  display: none;
+}
+
+.navbar__mobile-icons {
+  display: none;
+}
+
+.navbar__icon-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--border);
+  background: var(--white);
+  color: var(--text);
+  cursor: pointer;
 }
 
 .navbar__logo {
@@ -748,8 +769,41 @@ p,
 }
 
 @media (max-width: 700px) {
+  .navbar__search,
   .navbar__links {
     display: none;
+  }
+
+  .navbar__mobile-icons {
+    display: flex;
+    gap: 10px;
+    margin-left: auto;
+  }
+
+  #nav-search-toggle:checked ~ .navbar__search {
+    display: flex;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    max-width: none;
+    padding: 12px 24px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+  }
+
+  #nav-menu-toggle:checked ~ .navbar__links {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    gap: 16px;
+    padding: 20px 24px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
   }
 
   .listing-card {

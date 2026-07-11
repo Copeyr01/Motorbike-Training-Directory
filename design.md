@@ -115,5 +115,12 @@ Not deleted — parked in case revisited later:
 ## Open items
 
 - Real photography/logo assets still don't exist — all imagery is placeholder flat-black tiles with initials.
-- Task #9 (verify Edinburgh school data + outreach) is deferred until closer to launch.
+- Task #9 (verify Edinburgh school data + outreach, now including real pricing) is deferred until closer to launch.
 - If a more distinctive visual language is wanted later, it should be layered back on top of this wireframe once core flows (reviews, accounts, more cities) are built and proven — not before.
+
+## School data corrections (ongoing)
+
+- **Saltire Motorcycle Training removed entirely** (profile page, homepage card, sitemap, all "taught by" mentions and school-count text) — appears to no longer be in business. Now 3 Edinburgh schools, not 4.
+- **Harley's Rider Training also teaches A2** (confirmed via harleys.training) — added to its card, profile page (badge + course entry + description), and the licence guide's A2 section.
+- `pages/licence-guide.html`'s per-licence "taught by" sentence was replaced with an actual price-sorted (cheapest first) list of schools for that licence, reusing the same placeholder price data as the homepage cards — chosen instead of building separate per-licence pages, since with only 2–3 schools per licence today a dedicated page would be thin content that search engines tend to penalise rather than reward. Revisit once there are enough schools per licence to justify a dedicated URL.
+- Each school profile page's website link is now a prominent **"Visit website"** primary button (previously a plain text link buried in the Contact card) — outbound clicks to school sites are the metric this project intends to use to prove its traffic-driving effect, so this CTA needed more visual weight than a text link gave it. Actual click **tracking** (an analytics tool or a click-logging redirect) is a separate decision, not yet implemented — see note in Key decisions.

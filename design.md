@@ -117,6 +117,17 @@ Not deleted — parked in case revisited later:
 - Real photography/logo assets still don't exist — all imagery is placeholder flat-black tiles with initials.
 - Task #9 (verify Edinburgh school data + outreach, now including real pricing) is deferred until closer to launch.
 - If a more distinctive visual language is wanted later, it should be layered back on top of this wireframe once core flows (reviews, accounts, more cities) are built and proven — not before.
+- **Revisit link colour once real brand colour lands.** Body-copy links currently use `text-decoration: underline` as their only affordance (`a[style*="var(--orange)"] { text-decoration: underline; }`) because this pass is black/white only and `--orange` is temporarily just `--text`'s value. Once a real accent colour is introduced, decide whether links go back to colour-only, keep colour *and* underline, or something else — don't just silently drop the underline without deciding that's actually wanted.
+
+## UX audit fixes (accessibility pass)
+
+Four sitewide fixes from a full UX audit, applied via the shared stylesheet + a scripted pass over every page rather than one-off edits:
+- **Link affordance:** body-copy links (inline `style="color:var(--orange)"`) were computed to be *darker* than surrounding body text with no underline — completely indistinguishable from bold non-clickable labels like "Schools that teach it, cheapest first:". Fixed with the underline rule above (monochrome-compliant, no colour used).
+- **Focus indicators:** `.hero-search`/`.navbar-search` inputs had `outline: none` with no replacement, and the existing `.navbar-search:focus-within` border-colour rule was already a no-op (border was already at max-contrast black at rest). Replaced with an `outline` on the container at focus-within, offset outside the existing border so it's actually visible.
+- **Form labels:** postcode and school-search inputs had no `<label>` at all (placeholder-only); added visually-hidden (`.sr-only`) labels. Nav search input (present on every page) got an `aria-label` instead, since it lacks a stable `id` on most pages.
+- **`<main>` landmark + skip link:** neither existed anywhere. Added `<main id="main-content">` wrapping page content on every page, and a `.skip-link` as the first focusable element in `<body>`.
+
+Remaining audit findings (URL-reflected filters, "Reviews" nav link not pointing at reviews, mobile menu not auto-closing on same-page anchor clicks, imprecise postcode-error messaging, no loading state during geocode) are not yet actioned — candidates for a later pass.
 
 ## School data corrections (ongoing)
 

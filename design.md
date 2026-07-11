@@ -1,35 +1,33 @@
 # Upshift — Design System
 
-Plain, functional UI: clear layout, working search/filter/listing flows, minimal decoration. This is a deliberate step back from two bold visual explorations ("Night Ride" — black/blue poster system, and an earlier cut-corner "sharp/premium" system) — both are paused, not deleted, in case a bold direction is revisited once core flows are solid. See Archived directions.
+Near-wireframe UI: grayscale only, square corners, flat surfaces, minimal decoration — functionality is the whole point, not a visual language. This supersedes an earlier "functional-first" pass that still used a single orange accent and rounded corners; that pass is itself now one step short of what was asked for, so the system below removes colour and rounding entirely. Two earlier bold explorations ("Night Ride" — black/blue poster system, and a cut-corner "sharp/premium" system) remain paused. See Archived directions.
 
 **Status:** applied site-wide. Every page (`index.html`, school profiles, licence guide, `list-your-school.html`, legal pages) runs on the one shared stylesheet, `css/style.css`.
 
 ## Brand
 - **Name:** Upshift (working domain: upshiftuk.com)
-- **Wordmark:** "Upshift", with **"Up" set in the accent colour** and the rest in body text colour.
+- **Wordmark:** "Upshift", plain text — no colour accent on any letter.
 - **Positioning:** currently piloting in Edinburgh; built to extend UK-wide. Real schools, real reviews, no spin.
 
 ---
 
 ## Colour tokens
 
+Grayscale only — no colour accent anywhere in the UI.
+
 | Token | Hex | Usage |
 |---|---|---|
-| `--orange` (accent) | `#E85D24` | Wordmark's "Up", primary button fill, hero eyebrow, active/hover states — the one accent colour, used sparingly |
-| `--orange-dark` | `#c44d1a` | Accent hover state |
-| `--orange-light` | `#FEF0EA` | Accent tint background |
-| `--green` | `#00AA6C` | Trust/rating signals only (rating bubble, trust-stat numerals) |
-| `--green-light` | `#E0F5EE` | Trust tint background |
-| `--text` | `#0D0D0D` | Headlines, primary text |
-| `--text-2` | `#4A4A4A` | Body copy |
-| `--text-3` | `#767676` | Meta text, captions, fine print |
+| `--text` | `#0A0A0A` | Headlines, primary text, primary button fill, borders |
+| `--text-2` | `#454545` | Body copy |
+| `--text-3` | `#767676` | Meta text, captions, fine print, hero eyebrow |
 | `--white` | `#FFFFFF` | Page/card surfaces |
-| `--off` | `#F2F2F2` | Section backgrounds (page-wrap, trust band) |
-| `--border` | `#E0E0E0` | Card/input borders, dividers |
-| `--border-hover` | `#B0B0B0` | Card border on hover |
-| `--navy` | `#0f1f3d` | Footer background, placeholder image tiles |
+| `--off` | `#F4F4F4` | Section backgrounds, hover state for cards/rows |
+| `--border` / `--border-hover` | `#0A0A0A` | Card/input borders — same value; hover feedback comes from a background tint, not a border-colour change |
+| `--navy` | `#0A0A0A` | Footer background, placeholder image tiles (name kept for minimal diff; value is now plain black) |
+| `--orange` / `--orange-dark` / `--orange-light` | `#0A0A0A` / `#333333` / `#F0F0F0` | Legacy token names kept so old inline styles (`color:var(--orange)` on contact links etc.) still resolve — now just dark/light grays, not a colour accent |
+| `--green` / `--green-light` | `#0A0A0A` / `#F0F0F0` | Same story — kept for the same reason, resolves to grayscale |
 
-One accent colour, spent deliberately — orange marks the single primary action per view; green is reserved for trust/rating signals so it never competes with the accent.
+No element gets a colour treatment other elements don't. Licence badges, which previously colour-coded by licence type, are now plain white boxes with a black border and black text — wayfinding is by label text only.
 
 ---
 
@@ -45,29 +43,30 @@ System font stack (`-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Ar
 
 ## Shape language
 
-Plain rounded rectangles — no clip-path cuts, no poster-scale display type:
-- **Buttons, search bars, badges, tags, pills:** fully rounded (`--radius-pill`, 100px).
-- **Cards (listing cards, licence cards, content cards):** `--radius-xl` (16px) or `--radius-lg` (12px), 1px `--border`, `--white` fill.
-- **Shadows:** soft, functional drop shadows on hover only (`--shadow-sm` / `--shadow-hover`) — not a flat/no-shadow system.
+Square corners, flat surfaces, everywhere:
+- **Buttons, search bars, badges, tags, pills:** `border-radius: 0` (all `--radius-*` tokens are `0`).
+- **Cards (listing cards, licence cards, content cards):** `1px` solid black border, white fill, square corners.
+- **Shadows:** none (`--shadow-sm` / `--shadow-md` / `--shadow-hover` are all `none`). Hover feedback on cards/rows comes from a plain background tint (`--off`) instead.
+- **No gradients.** Placeholder image tiles (school initials) are a flat black fill, not the earlier navy gradient.
 
 ---
 
 ## Components
 
 ### Nav
-Sticky white bar, wordmark left (`<span class="accent">Up</span>shift`), a school-search box, quiet text links (licence guides / regions / reviews), and "List your school" as a small **outlined** button — a secondary action, not filled, since schools are onboarded via outreach rather than a self-serve funnel.
+Sticky white bar, plain-text wordmark, a school-search box, quiet text links (licence guides / regions / reviews), and "List your school" as a small **outlined** square button — a secondary action, not filled, since schools are onboarded via outreach rather than a self-serve funnel.
 
 ### Hero
-White background, eyebrow label, plain heading + subtitle, then the one primary action: a rounded search bar (text input + licence dropdown + filled orange submit button) with a live results dropdown beneath it. A single row of plain stats sits under the search (schools listed / licence types covered / reviews so far) — no separate duplicate trust-stat band.
+White background, gray eyebrow label, plain heading + subtitle, then the one primary action: a square-cornered search bar (text input + licence dropdown + filled black submit button) with a live results dropdown beneath it. A single row of plain stats sits under the search (schools listed / licence types covered / reviews so far).
 
 ### Licence chip / card row
-Five equal cards (CBT / A1 / A2 / Full A / Mod 1 & 2), each a colour-coded licence badge + short description + school count, linking into the licence guide. Per-licence badge colours (`--licence-*-bg` / `--licence-*-text`) are the one place colour-coding beyond the single accent is used, since they function as wayfinding, not brand decoration.
+Five equal cards (CBT / A1 / A2 / Full A / Mod 1 & 2), each a plain outlined licence-code box + short description + school count, linking into the licence guide.
 
 ### Listing cards
-White rows, rounded, 1px border. Placeholder image tile (gradient block with initials) left, school name + short description + real licence badges + tags, honest "No reviews yet" tag rather than a fabricated rating. A live distance line appears once a postcode search has resolved ("2.3 mi away" / "Distance unavailable" for schools without a confirmed postcode — never a guessed figure).
+White rows, square corners, 1px black border. Flat black placeholder image tile (initials) left, school name + short description + plain licence badges + tags, honest "No reviews yet" tag rather than a fabricated rating. A live distance line appears once a postcode search has resolved ("2.3 mi away" / "Distance unavailable" for schools without a confirmed postcode — never a guessed figure). Hover tints the row background, no shadow.
 
 ### Footer
-Navy panel, 4-column grid: wordmark + one-line description, then Licences / Company / Legal link columns, copyright bar beneath.
+Black panel, 4-column grid: wordmark + one-line description, then Licences / Company / Legal link columns, copyright bar beneath.
 
 ---
 
@@ -89,8 +88,8 @@ Navy panel, 4-column grid: wordmark + one-line description, then Licences / Comp
 
 ## Key decisions
 
-- **Functionality first.** Both bold explorations (Night Ride, cut-corner "sharp/premium") are paused in favour of a plain, working UI — search, filters, and real listings take priority over a distinctive visual language.
-- **One accent, spent deliberately.** Orange marks exactly one primary action per view; "List your school" and other secondary actions stay outlined, not filled.
+- **Wireframe-level simplicity.** No colour accent anywhere, square corners throughout, no shadows, no gradients — functionality (search, filters, real listings) is the entire visual language for now.
+- **Legacy token names kept, values changed.** Rather than touch every inline `style="color:var(--orange)"` across school/legal pages, the `--orange`/`--green` tokens were repointed to grayscale values instead of renamed — same effect, smaller diff.
 - **No fake ratings, no fake distances.** A school with zero reviews says so plainly. A school without a confirmed postcode shows "Distance unavailable" rather than an invented number.
 - **Rebrand:** GetOnBikes → Upshift. All visible brand text, wordmarks, and contact email updated; the live site still deploys from `getonbikes.vercel.app` (domain migration is separate infrastructure work, not yet done).
 
@@ -99,11 +98,12 @@ Navy panel, 4-column grid: wordmark + one-line description, then Licences / Comp
 ## Archived directions
 
 Not deleted — parked in case revisited later:
-- **"Night Ride"** — black canvas, poster-scale Unbounded type, light-blue accent, fully rounded pill shapes. Was briefly live on the homepage only (`css/homepage.css`, now removed) before this functional-first pass superseded it. Self-hosted Unbounded/Space Grotesk `.woff2` fonts were removed along with it.
+- **"Night Ride"** — black canvas, poster-scale Unbounded type, light-blue accent, fully rounded pill shapes. Was briefly live on the homepage only (`css/homepage.css`, now removed) before the functional-first pass superseded it. Self-hosted Unbounded/Space Grotesk `.woff2` fonts were removed along with it.
 - **Cut-corner "sharp/premium"** — warm paper background, single cut-corner clip-path on filled surfaces, orange accent. Retired before Night Ride was built; never implemented in code.
+- **First functional-first pass** — same layout as today, but kept a single orange accent colour and rounded corners (12–16px, pill buttons). Superseded by this wireframe pass within the same day.
 
 ## Open items
 
-- Real photography/logo assets still don't exist — all imagery is placeholder gradient tiles with initials.
-- Licence badge colour tokens are per-licence, not per-brand — confirmed intentional (wayfinding, not decoration) but worth re-checking if the palette changes.
+- Real photography/logo assets still don't exist — all imagery is placeholder flat-black tiles with initials.
 - Task #9 (verify Edinburgh school data + outreach) is deferred until closer to launch.
+- If a more distinctive visual language is wanted later, it should be layered back on top of this wireframe once core flows (reviews, accounts, more cities) are built and proven — not before.

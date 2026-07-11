@@ -748,8 +748,7 @@ p,
 }
 
 @media (max-width: 700px) {
-  .navbar__links,
-  .navbar__search {
+  .navbar__links {
     display: none;
   }
 

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   GetOnBikes — Design System
+   Upshift — Design System
    Single shared stylesheet. All tokens as CSS custom properties.
    See /design.md for the full spec this file implements.
    ========================================================================== */
@@ -602,6 +602,11 @@ p,
   font-weight: 800;
   font-size: 1.25rem;
   color: var(--text);
+}
+
+.navbar__logo .accent,
+.footer .accent {
+  color: var(--orange);
 }
 
 .navbar__search {

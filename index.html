@@ -31,9 +31,11 @@
   }
   .search-tab--active { background: var(--text); color: var(--white); }
   .search-panel[hidden] { display: none; }
-  .licence-picker { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+  .search-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .licence-picker { display: flex; flex-wrap: wrap; gap: 8px; }
   .licence-pill {
     padding: 10px 20px;
+    height: 52px;
     border: 1px solid var(--border);
     background: var(--white);
     color: var(--text);
@@ -42,6 +44,8 @@
     font-family: inherit;
   }
   .licence-pill--active { background: var(--text); color: var(--white); }
+  .search-row__postcode { flex: 1; min-width: 200px; margin: 0; }
+  .search-row__submit { flex-shrink: 0; height: 52px; }
   .field-error { color: var(--text-2); font-size: 0.8125rem; margin-top: 8px; }
   .search-wrap { position: relative; }
   .search-results {
@@ -105,15 +109,17 @@
     </div>
 
     <form class="search-panel" data-panel="licence" id="licence-form" autocomplete="off">
-      <div class="licence-picker" role="group" aria-label="Choose a licence">
-        <button type="button" class="licence-pill" data-licence="cbt" aria-pressed="false">CBT</button>
-        <button type="button" class="licence-pill" data-licence="a1" aria-pressed="false">A1</button>
-        <button type="button" class="licence-pill" data-licence="a2" aria-pressed="false">A2</button>
-        <button type="button" class="licence-pill" data-licence="full-a" aria-pressed="false">Full A</button>
-      </div>
-      <div class="hero-search">
-        <input type="text" class="hero-search__input" id="postcode-input" placeholder="Postcode (optional)">
-        <button type="submit" class="btn btn--primary hero-search__submit">Find schools</button>
+      <div class="search-row">
+        <div class="licence-picker" role="group" aria-label="Choose a licence">
+          <button type="button" class="licence-pill" data-licence="cbt" aria-pressed="false">CBT</button>
+          <button type="button" class="licence-pill" data-licence="a1" aria-pressed="false">A1</button>
+          <button type="button" class="licence-pill" data-licence="a2" aria-pressed="false">A2</button>
+          <button type="button" class="licence-pill" data-licence="full-a" aria-pressed="false">Full A</button>
+        </div>
+        <div class="hero-search search-row__postcode">
+          <input type="text" class="hero-search__input" id="postcode-input" placeholder="Postcode (optional)">
+        </div>
+        <button type="submit" class="btn btn--primary search-row__submit">Find schools</button>
       </div>
       <p class="field-error" id="postcode-error" hidden></p>
     </form>

@@ -57,11 +57,11 @@ Square corners, flat surfaces, everywhere:
 Sticky white bar, plain-text wordmark, a school-search box, quiet text links (licence guides / regions / reviews), and "List your school" as a small **outlined** square button — a secondary action, not filled, since schools are onboarded via outreach rather than a self-serve funnel.
 
 ### Hero
-White background, gray eyebrow label, plain heading + subtitle, then the primary action — two tabs above a search control:
-- **"Find by licence"** (default): a row of 4 licence pills (CBT / A1 / A2 / Full A, single-select) + an optional postcode field + one "Find schools" submit. Postcode is optional — licence alone filters the list below; adding a postcode also sorts it nearest-first and shows a distance line per card. An inline error appears under the field for anything that doesn't look like a UK postcode, rather than silently failing.
-- **"Search by School"**: a single name-search input with a live results dropdown, for the minority of visitors who already know which school they want. Demoted relative to the licence tab since most visitors don't yet know which school they're looking for — that's the problem the site exists to solve.
+White background, gray eyebrow label, plain heading + subtitle, then the primary action — two underlined text links (not boxed tabs, so they read as quiet mode-switches rather than competing with the actual form fields below them) above a search control, both on one row:
+- **"Search by Licence"** (default): a licence **dropdown** (All licences / CBT / A1 / A2 / Full A — a `<select>`, not buttons, so it reads as a required-looking form field rather than a set of filter chips) + an optional postcode field + one "Find schools" submit, all inline on a single row (wrapping on narrow screens). Postcode is optional — licence alone filters the list below; adding a postcode also sorts it nearest-first and shows a distance line per card. An inline error appears under the row for anything that doesn't look like a UK postcode, rather than silently failing.
+- **"Search by School"**: a single name-search input with a live results dropdown, for the minority of visitors who already know which school they want. Demoted relative to the licence mode since most visitors don't yet know which school they're looking for — that's the problem the site exists to solve.
 
-Both tabs filter/sort the same "Edinburgh training schools" list below rather than rendering a separate results view. The top-nav search box is a shortcut into the "Search by School" tab.
+Both modes filter/sort the same "Edinburgh training schools" list below rather than rendering a separate results view. The top-nav search box is a shortcut into "Search by School."
 
 ### Licence chip / card row
 Four cards (CBT / A1 / A2 / Full A — not five), each a plain outlined licence-code box + short description + school count, linking into the licence guide. A note beneath the grid explains that Mod 1 & 2 isn't a fifth licence — it's the shared two-part practical test for A1/A2/Full A — and links to that explainer instead of presenting it as a peer option.

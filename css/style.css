@@ -627,6 +627,20 @@ p,
 /* --------------------------------------------------------------------------
    Navbar
    -------------------------------------------------------------------------- */
+/* Anchor/scroll targets need to clear the sticky nav (64px) plus some
+   breathing room, or their heading lands hidden underneath it - applies to
+   both native #fragment jumps and JS .scrollIntoView() calls, since both
+   respect scroll-margin-top. */
+#top-schools,
+#cbt,
+#a1,
+#a2,
+#full-a,
+#mod-1-2,
+#main-content {
+  scroll-margin-top: 80px;
+}
+
 .navbar {
   position: sticky;
   top: 0;

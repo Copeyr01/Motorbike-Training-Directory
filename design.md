@@ -129,6 +129,10 @@ Four sitewide fixes from a full UX audit, applied via the shared stylesheet + a 
 
 Remaining audit findings (URL-reflected filters, "Reviews" nav link not pointing at reviews, mobile menu not auto-closing on same-page anchor clicks, imprecise postcode-error messaging, no loading state during geocode) are not yet actioned — candidates for a later pass.
 
+### Scroll-target offset
+
+The `.navbar` is `position: sticky; top: 0; height: 64px`, so any in-page anchor jump (native `#fragment` link, or JS `scrollIntoView()`) landed with the target heading tucked underneath the nav bar. Fixed with `scroll-margin-top: 80px` on every element that's ever a scroll/anchor target: `#top-schools` (homepage), `#cbt`/`#a1`/`#a2`/`#full-a`/`#mod-1-2` (licence guide), and `#main-content` (skip link). One property covers both native anchor navigation and JS `scrollIntoView()`, since both respect `scroll-margin-top` in all modern browsers — no separate JS offset calculation needed.
+
 ## School data corrections (ongoing)
 
 - **Saltire Motorcycle Training removed entirely** (profile page, homepage card, sitemap, all "taught by" mentions and school-count text) — appears to no longer be in business. Now 3 Edinburgh schools, not 4.

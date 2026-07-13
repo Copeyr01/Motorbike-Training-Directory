@@ -127,11 +127,28 @@ Four sitewide fixes from a full UX audit, applied via the shared stylesheet + a 
 - **Form labels:** postcode and school-search inputs had no `<label>` at all (placeholder-only); added visually-hidden (`.sr-only`) labels. Nav search input (present on every page) got an `aria-label` instead, since it lacks a stable `id` on most pages.
 - **`<main>` landmark + skip link:** neither existed anywhere. Added `<main id="main-content">` wrapping page content on every page, and a `.skip-link` as the first focusable element in `<body>`.
 
-Remaining audit findings (URL-reflected filters, "Reviews" nav link not pointing at reviews, mobile menu not auto-closing on same-page anchor clicks, imprecise postcode-error messaging, no loading state during geocode) are not yet actioned — candidates for a later pass.
+Remaining audit finding: mobile menu not auto-closing on same-page anchor clicks — not yet actioned. The other four (URL-reflected filters, "Reviews" nav link, imprecise postcode-error messaging, no loading state during geocode) are resolved by the schools.html PLP — see below.
 
 ### Scroll-target offset
 
 The `.navbar` is `position: sticky; top: 0; height: 64px`, so any in-page anchor jump (native `#fragment` link, or JS `scrollIntoView()`) landed with the target heading tucked underneath the nav bar. Fixed with `scroll-margin-top: 80px` on every element that's ever a scroll/anchor target: `#top-schools` (homepage), `#cbt`/`#a1`/`#a2`/`#full-a`/`#mod-1-2` (licence guide), and `#main-content` (skip link). One property covers both native anchor navigation and JS `scrollIntoView()`, since both respect `scroll-margin-top` in all modern browsers — no separate JS offset calculation needed.
+
+## Schools listing page (PLP) + centralized data model
+
+Search used to happen in place on the homepage: submitting either search form re-filtered the `#top-schools` section and scrolled to it. That gave no clear signal a search had happened, no URL state (not bookmarkable/shareable, back button did nothing useful), and didn't scale — "more UK cities" is an explicit stated goal (see Brand section, and the About page), and school data was hardcoded as HTML attributes directly on homepage `.listing-card` elements. Removing Saltire and adding A1/A2 to two schools (see below) required coordinated edits across the homepage markup, `sitemap.xml`, and `licence-guide.html`'s hand-written lists — three files in lockstep, per change.
+
+**Fixed with three pieces:**
+- **`js/schools-data.js`** — `window.SCHOOLS`, a single array of plain school objects (id, name, city, area, postcode, licences, per-licence prices, description, tags, profile href). Single source of truth for both the homepage teaser and the PLP. `city` is a first-class field from day one (always `'edinburgh'` today) so a second city later is a data addition, not a restructure.
+- **`js/schools.js`** — `window.Schools`, one namespace (not loose globals, to avoid colliding with each page's own inline helpers) wrapping geocoding, distance, pricing, filtering, sorting and card-rendering logic, ported from the old inline homepage script and retargeted from DOM elements to `SCHOOLS` objects. Loaded on both `index.html` and `schools.html`.
+- **`schools.html`** (new, root-level, alongside `index.html` — not under `pages/` since that's static content, and not `pages/schools.html` since that collides conceptually with the existing `pages/schools/` profile-page directory) — the canonical browse/filter/search page. A single combinable filter bar (licence + postcode + school-name + sort, AND-combinable rather than the homepage's old mutually-exclusive tab modes), a live result count, removable filter chips, a loading indicator during the postcode geocode fetch, and an empty state with a clear-filters action.
+
+**URL is the source of truth on the PLP**: query params `city`, `licence`, `postcode`, `q`, `sort` (`Schools.toQueryString`/`parseQueryString` centralize the param contract so the two pages can't drift). On load, the PLP parses the URL and renders immediately. On every filter change it updates the URL via `history.replaceState` — deliberately not `pushState` per change, since that would make the back button step through every keystroke; the back button should take you out of the PLP entirely, which normal navigation *into* the PLP already gives for free.
+
+**Postcode error messaging fixed as a side effect of the split**: the homepage only does the synchronous regex check (`Schools.isPostcodeLike`) before navigating — a malformed postcode shows an inline error and never navigates. `schools.html` does the actual geocode once loaded, and only shows "couldn't find that postcode" if the regex passed but the API returned nothing. Two distinct messages for two distinct failure modes.
+
+**Homepage (`index.html`) is lighter now**: hero, both search forms, and the licence quiz stay exactly as they were visually, but on submit they navigate to `schools.html?...` instead of filtering in place. `#top-schools` is now a generic, non-interactive showcase (name/area/licence-badges/link only — no price, no distance — rendered via `Schools.renderTeaser`), plus a "See all Edinburgh schools →" CTA to `schools.html`. Hero stats and the licence-grid per-licence counts are computed from `SCHOOLS` instead of hand-typed, so they can't go stale the way the school-count text did after every past data change.
+
+**Explicitly out of scope, flagged as follow-ups, not built now**: migrating `licence-guide.html`'s hand-written per-licence prose lists to also pull from `SCHOOLS` (that page is guide content, not an app view — worth doing once there's real drift-risk, not before); a "compare schools" feature; pagination (irrelevant at 3 schools); an actual city-switcher UI (data model and URL already support `city`, no UI needed until city #2 exists).
 
 ## School data corrections (ongoing)
 

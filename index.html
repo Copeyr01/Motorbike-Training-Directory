@@ -75,9 +75,6 @@
   .search-result__name { margin: 0; font-weight: 700; font-size: 0.9375rem; color: var(--text); }
   .search-result__meta { margin: 2px 0 0; font-size: 0.8125rem; color: var(--text-3); }
   .search-empty { padding: 16px 18px; font-size: 0.875rem; color: var(--text-3); }
-  .card-distance { font-size: 0.8125rem; color: var(--green); font-weight: 600; margin: 4px 0 0; }
-  .card-distance--unavailable { color: var(--text-3); font-weight: 400; }
-  .card-price { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2px 0 0; }
 
   .quiz-toggle {
     display: inline-block;
@@ -133,7 +130,7 @@
 
     <nav class="navbar__links">
       <a href="pages/licence-guide.html">Licence guides</a>
-      <a href="#top-schools">Reviews</a>
+      <a href="schools.html">Reviews</a>
     </nav>
 
     <div class="navbar__mobile-icons">
@@ -230,8 +227,8 @@
     </div>
 
     <div class="hero__stats text-body-sm" style="color:var(--text-3)">
-      <span><span class="text-semibold" style="color:var(--text)">3</span> Edinburgh schools listed</span>
-      <span><span class="text-semibold" style="color:var(--text)">4</span> licence types covered</span>
+      <span><span class="text-semibold" style="color:var(--text)" id="stat-schools">3</span> Edinburgh schools listed</span>
+      <span><span class="text-semibold" style="color:var(--text)" id="stat-licences">4</span> licence types covered</span>
       <span><span class="text-semibold" style="color:var(--text)">0</span> reviews so far — be the first</span>
     </div>
   </div>
@@ -247,25 +244,25 @@
         <span class="licence-badge licence-badge--cbt licence-card__badge">CBT</span>
         <p class="licence-card__title">Compulsory basic training</p>
         <p class="licence-card__desc">Before you ride on the road</p>
-        <p class="licence-card__count">3 schools</p>
+        <p class="licence-card__count" id="count-cbt">3 schools</p>
       </a>
       <a href="pages/licence-guide.html#a1" class="licence-card">
         <span class="licence-badge licence-badge--a1 licence-card__badge">A1</span>
         <p class="licence-card__title">Light motorcycle licence</p>
         <p class="licence-card__desc">Ride from 17, up to 125cc</p>
-        <p class="licence-card__count">2 schools</p>
+        <p class="licence-card__count" id="count-a1">2 schools</p>
       </a>
       <a href="pages/licence-guide.html#a2" class="licence-card">
         <span class="licence-badge licence-badge--a2 licence-card__badge">A2</span>
         <p class="licence-card__title">Restricted licence</p>
         <p class="licence-card__desc">Ride from 19, up to 47bhp</p>
-        <p class="licence-card__count">2 schools</p>
+        <p class="licence-card__count" id="count-a2">2 schools</p>
       </a>
       <a href="pages/licence-guide.html#full-a" class="licence-card">
         <span class="licence-badge licence-badge--full-a licence-card__badge">Full A</span>
         <p class="licence-card__title">Unrestricted licence</p>
         <p class="licence-card__desc">No power restrictions</p>
-        <p class="licence-card__count">3 schools</p>
+        <p class="licence-card__count" id="count-full-a">3 schools</p>
       </a>
     </div>
     <p class="text-body-sm" style="color:var(--text-2); margin-top:16px;">A1, A2 and Full A all end with the same two-part practical test — <a href="pages/licence-guide.html#mod-1-2" style="color:var(--orange)">Mod 1 &amp; 2</a>. It's not a licence of its own, so it's not a separate option above, but Harley's Rider Training offers dedicated test-day coaching for it.</p>
@@ -275,75 +272,13 @@
 
 <section id="top-schools" style="padding: 48px 0;">
   <div class="container">
-    <h2>Edinburgh training schools</h2>
-    <p class="text-body-sm" style="color:var(--text-2); margin: 8px 0 24px;" id="results-desc">Reviews are just getting started — be the first to leave one.</p>
-
-    <div class="listing-list" id="listings">
-
-      <a href="pages/schools/edinburgh-motorcycle-training.html" class="listing-card" data-name="Edinburgh Motorcycle Training" data-area="Straiton" data-postcode="" data-licences="cbt full-a" data-price-cbt="99" data-price-full-a="699">
-        <div class="listing-card__image">
-          <span class="listing-card__rank">Straiton</span>
-          EMT
-        </div>
-        <div class="listing-card__content">
-          <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
-          <h3>Edinburgh Motorcycle Training</h3>
-          <p class="card-price"></p>
-          <p class="text-body-sm" style="color:var(--text-2)">Independent motorcycle school in Straiton offering CBT and full licence (DAS) training, on and off-road.</p>
-          <p class="card-distance" hidden></p>
-          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
-            <span class="licence-badge licence-badge--cbt">CBT</span>
-            <span class="licence-badge licence-badge--full-a">Full A</span>
-            <span class="tag">Weekday &amp; weekend courses</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="pages/schools/two-wheels.html" class="listing-card" data-name="Two Wheels Motorcycle Training" data-area="Peffermill" data-postcode="EH16 5LL" data-licences="cbt a1 a2 full-a" data-price-cbt="89" data-price-a1="599" data-price-a2="649" data-price-full-a="749">
-        <div class="listing-card__image">
-          <span class="listing-card__rank">Peffermill</span>
-          TW
-        </div>
-        <div class="listing-card__content">
-          <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
-          <h3>Two Wheels Motorcycle Training</h3>
-          <p class="card-price"></p>
-          <p class="text-body-sm" style="color:var(--text-2)">Honda Approved School of Motorcycling, training riders across Edinburgh and the Lothians since 1991.</p>
-          <p class="card-distance" hidden></p>
-          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
-            <span class="licence-badge licence-badge--cbt">CBT</span>
-            <span class="licence-badge licence-badge--a1">A1</span>
-            <span class="licence-badge licence-badge--a2">A2</span>
-            <span class="licence-badge licence-badge--full-a">Full A</span>
-            <span class="tag">Honda Approved School</span>
-          </div>
-        </div>
-      </a>
-
-      <a href="pages/schools/harleys-rider-training.html" class="listing-card" data-name="Harley's Rider Training" data-area="Gorgie" data-postcode="EH11 2RP" data-licences="cbt a1 a2 full-a" data-price-cbt="95" data-price-a1="565" data-price-a2="625" data-price-full-a="719">
-        <div class="listing-card__image">
-          <span class="listing-card__rank">Gorgie</span>
-          HRT
-        </div>
-        <div class="listing-card__content">
-          <div class="listing-card__rating"><span class="tag">No reviews yet</span></div>
-          <h3>Harley's Rider Training</h3>
-          <p class="card-price"></p>
-          <p class="text-body-sm" style="color:var(--text-2)">Family-run school in Gorgie providing CBT, A1, A2, full licence training and Mod 1 &amp; 2 test preparation since 1997.</p>
-          <p class="card-distance" hidden></p>
-          <div style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px;">
-            <span class="licence-badge licence-badge--cbt">CBT</span>
-            <span class="licence-badge licence-badge--a1">A1</span>
-            <span class="licence-badge licence-badge--a2">A2</span>
-            <span class="licence-badge licence-badge--full-a">Full A</span>
-            <span class="tag">Mod 1 &amp; 2 test prep</span>
-          </div>
-        </div>
-      </a>
-
+    <div style="display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px;">
+      <h2>Edinburgh training schools</h2>
+      <a href="schools.html" class="btn btn--outline btn--sm">See all Edinburgh schools →</a>
     </div>
+    <p class="text-body-sm" style="color:var(--text-2); margin: 8px 0 24px;">Reviews are just getting started — be the first to leave one.</p>
 
-    <p id="no-results" class="text-body-sm" style="display:none; color:var(--text-2); text-align:center; padding:24px 0 0;">No schools match that search. Try clearing the licence filter or searching a different area.</p>
+    <div class="listing-list" id="listings"></div>
   </div>
 </section>
 
@@ -387,14 +322,11 @@
   </div>
 </footer>
 
+<script src="js/schools-data.js"></script>
+<script src="js/schools.js"></script>
 <script>
 (function () {
-  var cards = Array.prototype.slice.call(document.querySelectorAll('.listing-card'));
-  var noResults = document.getElementById('no-results');
-  var resultsDesc = document.getElementById('results-desc');
-  var listings = document.getElementById('listings');
   var navInput = document.getElementById('nav-search-input');
-  var topSchools = document.getElementById('top-schools');
 
   var tabs = Array.prototype.slice.call(document.querySelectorAll('.search-tab'));
   var panels = Array.prototype.slice.call(document.querySelectorAll('.search-panel'));
@@ -409,207 +341,47 @@
   var searchResults = document.getElementById('search-results');
   var searchWrap = document.querySelector('.search-wrap');
 
-  function norm(str) { return (str || '').toLowerCase().trim(); }
+  var EDINBURGH_SCHOOLS = SCHOOLS.filter(function (s) { return s.city === 'edinburgh'; });
 
-  var LICENCE_LABELS = { 'cbt': 'CBT', 'a1': 'A1', 'a2': 'A2', 'full-a': 'Full A' };
-  var PRICE_KEYS = { 'cbt': 'priceCbt', 'a1': 'priceA1', 'a2': 'priceA2', 'full-a': 'priceFullA' };
+  // -- Homepage teaser: generic, non-interactive — the real search/filter
+  // experience lives on schools.html. Hero stats and per-licence counts
+  // are computed here too, so they can't go stale the way hand-typed
+  // numbers did.
+  Schools.renderTeaser(document.getElementById('listings'), EDINBURGH_SCHOOLS);
 
-  // Prices per licence, per school. "Prices from £X" (lowest across whatever
-  // that school offers) by default; switches to the exact figure for a
-  // specific licence once that's what's being searched.
-  function licencePrices(card) {
-    return ['cbt', 'a1', 'a2', 'full-a'].map(function (l) {
-      var raw = card.dataset[PRICE_KEYS[l]];
-      return raw ? { licence: l, price: parseInt(raw, 10) } : null;
-    }).filter(Boolean);
-  }
-
-  function priceLabel(card) {
-    var prices = licencePrices(card);
-    if (prices.length === 0) return null;
-
-    if (currentMode === 'licence' && currentLicence) {
-      var match = prices.filter(function (p) { return p.licence === currentLicence; })[0];
-      if (match) return LICENCE_LABELS[currentLicence] + ' — £' + match.price;
-    }
-
-    var min = Math.min.apply(null, prices.map(function (p) { return p.price; }));
-    return 'Prices from £' + min;
-  }
-
-  // ------------------------------------------------------------------
-  // Postcode distance: geocode via postcodes.io (free, no key, UK-only)
-  // and compute straight-line distance client-side. Cached per postcode
-  // so repeated searches don't re-fetch. Schools with no confirmed
-  // postcode (data-postcode="") are never geocoded — they show "distance
-  // unavailable" rather than a guessed figure.
-  // ------------------------------------------------------------------
-  var FULL_POSTCODE_RE = /^[a-z]{1,2}\d[a-z\d]?\s*\d[a-z]{2}$/i;
-  var OUTCODE_RE = /^[a-z]{1,2}\d[a-z\d]?$/i;
-  var geocodeCache = {};
-
-  function isPostcodeLike(q) {
-    var t = q.trim();
-    return FULL_POSTCODE_RE.test(t) || OUTCODE_RE.test(t);
-  }
-
-  function geocode(rawQuery) {
-    var q = rawQuery.trim();
-    var key = norm(q).replace(/\s+/g, '');
-    if (geocodeCache[key]) return Promise.resolve(geocodeCache[key]);
-
-    var isFull = FULL_POSTCODE_RE.test(q);
-    var endpoint = isFull
-      ? 'https://api.postcodes.io/postcodes/' + encodeURIComponent(q)
-      : 'https://api.postcodes.io/outcodes/' + encodeURIComponent(q);
-
-    return fetch(endpoint)
-      .then(function (res) { return res.json(); })
-      .then(function (data) {
-        if (data.status !== 200 || !data.result) return null;
-        var coords = { lat: data.result.latitude, lng: data.result.longitude };
-        geocodeCache[key] = coords;
-        return coords;
-      })
-      .catch(function () { return null; });
-  }
-
-  function haversineMiles(a, b) {
-    var R = 3958.8;
-    var dLat = (b.lat - a.lat) * Math.PI / 180;
-    var dLng = (b.lng - a.lng) * Math.PI / 180;
-    var lat1 = a.lat * Math.PI / 180;
-    var lat2 = b.lat * Math.PI / 180;
-    var h = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
-    return R * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
-  }
-
-  // Distances from the last successfully geocoded search, keyed by
-  // card element. Cleared whenever the query stops being postcode-like.
-  var distanceByCard = null;
-
-  function computeDistances(originCoords) {
-    var work = cards.map(function (card) {
-      var postcode = (card.dataset.postcode || '').trim();
-      if (!postcode) return Promise.resolve([card, null]);
-      return geocode(postcode).then(function (coords) {
-        return [card, coords ? haversineMiles(originCoords, coords) : null];
-      });
-    });
-    return Promise.all(work).then(function (pairs) {
-      var map = new Map();
-      pairs.forEach(function (pair) { map.set(pair[0], pair[1]); });
-      return map;
-    });
-  }
-
-  function distanceLabel(miles) {
-    if (miles === null || miles === undefined) return { text: 'Distance unavailable', unavailable: true };
-    if (miles < 0.1) return { text: 'Less than 0.1 mi away', unavailable: false };
-    return { text: miles.toFixed(1) + ' mi away', unavailable: false };
-  }
-
-  function renderCardDistances() {
-    cards.forEach(function (card) {
-      var el = card.querySelector('.card-distance');
-      if (!distanceByCard) {
-        el.hidden = true;
-        return;
-      }
-      var miles = distanceByCard.get(card);
-      var label = distanceLabel(miles);
-      el.textContent = label.text;
-      el.classList.toggle('card-distance--unavailable', label.unavailable);
-      el.hidden = false;
-    });
-  }
-
-  function sortByDistance(list) {
-    if (!distanceByCard) return list;
-    return list.slice().sort(function (a, b) {
-      var da = distanceByCard.get(a);
-      var db = distanceByCard.get(b);
-      if (da === null || da === undefined) return db === null || db === undefined ? 0 : 1;
-      if (db === null || db === undefined) return -1;
-      return da - db;
-    });
-  }
-
-  // ------------------------------------------------------------------
-  // Two independent ways to narrow the "Edinburgh training schools" list
-  // below: by licence (+ optional postcode, for distance), or by school
-  // name. Whichever was submitted last wins; switching tabs alone doesn't
-  // change what's shown.
-  // ------------------------------------------------------------------
-  var currentMode = 'none'; // 'none' | 'licence' | 'school'
-  var currentLicence = '';
-  var currentSchoolQuery = '';
-
-  function cardVisible(card) {
-    if (currentMode === 'licence') {
-      var licences = (card.dataset.licences || '').split(' ');
-      return !currentLicence || licences.indexOf(currentLicence) !== -1;
-    }
-    if (currentMode === 'school') {
-      var q = currentSchoolQuery;
-      return !q || norm(card.dataset.name).indexOf(q) !== -1 || norm(card.dataset.area).indexOf(q) !== -1;
-    }
-    return true;
-  }
-
-  function renderCardPrices() {
-    cards.forEach(function (card) {
-      var el = card.querySelector('.card-price');
-      var label = priceLabel(card);
-      el.textContent = label || '';
-      el.hidden = !label;
-    });
-  }
-
-  function renderListings() {
-    var ordered = sortByDistance(cards);
-    ordered.forEach(function (card) { listings.appendChild(card); });
-
-    var visibleCount = 0;
-    ordered.forEach(function (card) {
-      var visible = cardVisible(card);
-      card.style.display = visible ? '' : 'none';
-      if (visible) visibleCount++;
-    });
-    noResults.style.display = visibleCount === 0 ? '' : 'none';
-    renderCardPrices();
-  }
+  document.getElementById('stat-schools').textContent = EDINBURGH_SCHOOLS.length;
+  var allLicences = {};
+  EDINBURGH_SCHOOLS.forEach(function (s) { s.licences.forEach(function (l) { allLicences[l] = true; }); });
+  document.getElementById('stat-licences').textContent = Object.keys(allLicences).length;
+  ['cbt', 'a1', 'a2', 'full-a'].forEach(function (l) {
+    var count = EDINBURGH_SCHOOLS.filter(function (s) { return s.licences.indexOf(l) !== -1; }).length;
+    var el = document.getElementById('count-' + l);
+    if (el) el.textContent = count + (count === 1 ? ' school' : ' schools');
+  });
 
   function renderSchoolDropdown(query) {
-    var q = norm(query);
+    var q = Schools.norm(query);
     if (!q) {
       searchResults.hidden = true;
       searchResults.innerHTML = '';
       return;
     }
 
-    var matches = sortByDistance(cards.filter(function (card) {
-      return norm(card.dataset.name).indexOf(q) !== -1 || norm(card.dataset.area).indexOf(q) !== -1;
-    }));
+    var matches = EDINBURGH_SCHOOLS.filter(function (school) {
+      return Schools.norm(school.name).indexOf(q) !== -1 || Schools.norm(school.area).indexOf(q) !== -1;
+    });
 
     if (matches.length === 0) {
       searchResults.innerHTML = '<div class="search-empty">No schools match "' + query + '".</div>';
     } else {
-      searchResults.innerHTML = matches.map(function (card) {
-        var badges = (card.dataset.licences || '').split(' ').map(function (l) {
-          return LICENCE_LABELS[l] || l.toUpperCase();
-        }).join(' · ');
-        var meta = card.dataset.area + ' · ' + badges;
-        var price = priceLabel(card);
+      searchResults.innerHTML = matches.map(function (school) {
+        var badges = school.licences.map(function (l) { return Schools.LICENCE_LABELS[l]; }).join(' · ');
+        var meta = school.area + ' · ' + badges;
+        var price = Schools.priceLabel(school);
         if (price) meta = price + ' · ' + meta;
-        if (distanceByCard) {
-          var label = distanceLabel(distanceByCard.get(card));
-          meta = label.text + ' · ' + meta;
-        }
-        return '<a class="search-result" href="' + card.getAttribute('href') + '">' +
+        return '<a class="search-result" href="' + school.href + '">' +
           '<div>' +
-            '<p class="search-result__name">' + card.dataset.name + '</p>' +
+            '<p class="search-result__name">' + school.name + '</p>' +
             '<p class="search-result__meta">' + meta + '</p>' +
           '</div>' +
           '<span>→</span>' +
@@ -633,68 +405,30 @@
     });
   });
 
-  // -- "Search by Licence" panel -------------------------------------------
-  function describeResults() {
-    if (currentMode === 'licence' && currentLicence) {
-      resultsDesc.textContent = 'Filtered by ' + LICENCE_LABELS[currentLicence] + '.';
-    } else if (currentMode === 'school' && currentSchoolQuery) {
-      resultsDesc.textContent = 'Filtered by "' + currentSchoolQuery + '".';
-    } else {
-      resultsDesc.textContent = 'Reviews are just getting started — be the first to leave one.';
-    }
-  }
-
+  // -- "Search by Licence" panel: hands off to schools.html, which owns
+  // the actual filtering/results — the homepage only does the fast,
+  // synchronous postcode-format check before navigating. -------------------
   licenceForm.addEventListener('submit', function (e) {
     e.preventDefault();
     postcodeError.hidden = true;
     var postcode = postcodeInput.value.trim();
-    currentMode = 'licence';
-    currentLicence = licenceSelect.value;
 
-    if (!postcode) {
-      distanceByCard = null;
-      renderCardDistances();
-      renderListings();
-      describeResults();
-      topSchools.scrollIntoView({ behavior: 'smooth' });
-      return;
-    }
-
-    if (!isPostcodeLike(postcode)) {
-      distanceByCard = null;
-      renderCardDistances();
+    if (postcode && !Schools.isPostcodeLike(postcode)) {
       postcodeError.textContent = '"' + postcode + '" doesn\'t look like a valid UK postcode. Try a full postcode (EH11 3XX) or area code (EH11).';
       postcodeError.hidden = false;
-      renderListings();
-      describeResults();
-      topSchools.scrollIntoView({ behavior: 'smooth' });
       return;
     }
 
-    geocode(postcode).then(function (origin) {
-      if (postcodeInput.value.trim() !== postcode) return; // input changed while waiting
-      if (!origin) {
-        distanceByCard = null;
-        renderCardDistances();
-        postcodeError.textContent = '"' + postcode + '" doesn\'t look like a valid UK postcode. Try a full postcode (EH11 3XX) or area code (EH11).';
-        postcodeError.hidden = false;
-        renderListings();
-        describeResults();
-        topSchools.scrollIntoView({ behavior: 'smooth' });
-        return;
-      }
-      computeDistances(origin).then(function (map) {
-        if (postcodeInput.value.trim() !== postcode) return;
-        distanceByCard = map;
-        renderCardDistances();
-        renderListings();
-        describeResults();
-        topSchools.scrollIntoView({ behavior: 'smooth' });
-      });
+    location.href = 'schools.html?' + Schools.toQueryString({
+      city: 'edinburgh',
+      licence: licenceSelect.value,
+      postcode: postcode
     });
   });
 
-  // -- "Search by School" panel -------------------------------------------
+  // -- "Search by School" panel: live dropdown for a quick jump straight
+  // to a profile; submitting without picking one hands off to
+  // schools.html for the full result set. ---------------------------------
   schoolInput.addEventListener('input', function () {
     renderSchoolDropdown(schoolInput.value);
   });
@@ -715,22 +449,15 @@
 
   schoolForm.addEventListener('submit', function (e) {
     e.preventDefault();
-    searchResults.hidden = true;
-    currentMode = 'school';
-    currentSchoolQuery = norm(schoolInput.value);
-    renderListings();
-    describeResults();
-    topSchools.scrollIntoView({ behavior: 'smooth' });
+    location.href = 'schools.html?' + Schools.toQueryString({ city: 'edinburgh', q: schoolInput.value.trim() });
   });
 
-  // Top-nav quick search: jump to the "Search by School" tab and run it.
+  // Top-nav quick search: hand off to schools.html.
   if (navInput) {
     navInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') {
         e.preventDefault();
-        document.getElementById('tab-school').click();
-        schoolInput.value = navInput.value;
-        schoolForm.dispatchEvent(new Event('submit', { cancelable: true }));
+        location.href = 'schools.html?' + Schools.toQueryString({ q: navInput.value.trim() });
       }
     });
   }
@@ -866,11 +593,8 @@
   quizSeeSchools.addEventListener('click', function () {
     var licence = quizResult.dataset.licence;
     if (!licence) return;
-    licenceSelect.value = licence;
-    licenceForm.dispatchEvent(new Event('submit', { cancelable: true }));
+    location.href = 'schools.html?' + Schools.toQueryString({ city: 'edinburgh', licence: licence });
   });
-
-  renderCardPrices(); // show "Prices from £X" immediately, before any search
 })();
 </script>
 

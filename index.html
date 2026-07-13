@@ -78,6 +78,43 @@
   .card-distance { font-size: 0.8125rem; color: var(--green); font-weight: 600; margin: 4px 0 0; }
   .card-distance--unavailable { color: var(--text-3); font-weight: 400; }
   .card-price { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2px 0 0; }
+
+  .quiz-toggle {
+    display: inline-block;
+    margin-top: 14px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--text-3);
+    font-weight: 600;
+    font-size: 0.875rem;
+    font-family: inherit;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .quiz-toggle:hover { color: var(--text); }
+  .licence-quiz { margin-top: 16px; text-align: left; }
+  .licence-quiz[hidden] { display: none; }
+  .quiz-fieldset { border: 0; padding: 0; margin: 0 0 20px; }
+  .quiz-fieldset[hidden] { display: none; }
+  .quiz-fieldset legend { font-weight: 700; font-size: 0.9375rem; margin: 0 0 10px; padding: 0; }
+  .quiz-options { display: flex; flex-wrap: wrap; gap: 8px; }
+  .quiz-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    font-size: 0.875rem;
+    cursor: pointer;
+  }
+  .quiz-option input { accent-color: var(--text); }
+  .quiz-option:has(input:checked) { background: var(--text); color: var(--white); border-color: var(--text); }
+  .quiz-option:has(input:checked) input { accent-color: var(--white); }
+  .quiz-option:has(input:focus-visible) { outline: 2px solid var(--text); outline-offset: 2px; }
+  .quiz-result { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); }
+  .quiz-result[hidden] { display: none; }
+  .quiz-result__headline { font-weight: 700; font-size: 1rem; margin: 0 0 8px; }
 </style>
 </head>
 <body>
@@ -138,6 +175,51 @@
       </div>
       <p class="field-error" id="postcode-error" hidden></p>
     </form>
+
+    <div class="search-panel" data-panel="licence" id="quiz-wrap">
+      <button type="button" class="quiz-toggle" id="quiz-toggle" aria-expanded="false" aria-controls="licence-quiz">Not sure what you need? Take the 30-second quiz</button>
+
+      <div class="licence-quiz content-card" id="licence-quiz" hidden>
+        <fieldset class="quiz-fieldset">
+          <legend>How old are you?</legend>
+          <div class="quiz-options">
+            <label class="quiz-option"><input type="radio" name="quiz-age" value="under17"> Under 17</label>
+            <label class="quiz-option"><input type="radio" name="quiz-age" value="17-18"> 17–18</label>
+            <label class="quiz-option"><input type="radio" name="quiz-age" value="19-23"> 19–23</label>
+            <label class="quiz-option"><input type="radio" name="quiz-age" value="24plus"> 24+</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="quiz-fieldset">
+          <legend>Do you already hold any of these?</legend>
+          <div class="quiz-options">
+            <label class="quiz-option"><input type="radio" name="quiz-held" value="none"> None of these</label>
+            <label class="quiz-option"><input type="radio" name="quiz-held" value="cbt"> CBT certificate</label>
+            <label class="quiz-option"><input type="radio" name="quiz-held" value="a1"> A1 licence</label>
+            <label class="quiz-option"><input type="radio" name="quiz-held" value="a2"> A2 licence</label>
+          </div>
+        </fieldset>
+
+        <fieldset class="quiz-fieldset" id="quiz-pref-fieldset" hidden>
+          <legend>What are you hoping to ride?</legend>
+          <div class="quiz-options">
+            <label class="quiz-option"><input type="radio" name="quiz-pref" value="small"> A smaller bike (125cc) is fine for now</label>
+            <label class="quiz-option"><input type="radio" name="quiz-pref" value="bigger"> I want something with more power</label>
+          </div>
+        </fieldset>
+
+        <button type="button" class="btn btn--primary btn--sm" id="quiz-submit">Get my recommendation</button>
+        <p class="field-error" id="quiz-error" hidden>Answer the question(s) above to get a recommendation.</p>
+
+        <div class="quiz-result" id="quiz-result" hidden>
+          <p class="quiz-result__headline" id="quiz-result-headline"></p>
+          <p class="text-body-sm" id="quiz-result-text" style="color:var(--text-2)"></p>
+          <button type="button" class="btn btn--outline btn--sm" id="quiz-see-schools" hidden style="margin-top:12px;">See matching schools</button>
+        </div>
+
+        <p class="text-fine" style="color:var(--text-3); margin-top:16px;">Rules current as of July 2026 — always confirm with <a href="https://www.gov.uk/ride-motorcycle-moped/bike-categories-ages-and-licence-requirements" style="color:var(--orange); text-decoration:underline;" target="_blank" rel="noopener">gov.uk</a> before booking.</p>
+      </div>
+    </div>
 
     <div class="search-panel search-wrap" data-panel="school" id="school-panel" hidden>
       <form class="hero-search" id="school-form" autocomplete="off">
@@ -652,6 +734,139 @@
       }
     });
   }
+
+  // -- "Not sure what you need?" licence quiz -----------------------------
+  // Recommends a licence category from age + what's already held, per
+  // current DVSA rules (CBT prerequisite; A1 17+ up to 125cc/11kW; A2 19+
+  // up to 35kW; Full A direct access 24+, or progressive access from A2
+  // after a 2-year hold once 21+). Ambiguous case (19-23, nothing held
+  // beyond CBT) asks one follow-up question rather than guessing.
+  var quizToggle = document.getElementById('quiz-toggle');
+  var quizPanel = document.getElementById('licence-quiz');
+  var quizPrefFieldset = document.getElementById('quiz-pref-fieldset');
+  var quizSubmit = document.getElementById('quiz-submit');
+  var quizError = document.getElementById('quiz-error');
+  var quizResult = document.getElementById('quiz-result');
+  var quizResultHeadline = document.getElementById('quiz-result-headline');
+  var quizResultText = document.getElementById('quiz-result-text');
+  var quizSeeSchools = document.getElementById('quiz-see-schools');
+
+  function quizChecked(name) {
+    var el = quizPanel.querySelector('input[name="' + name + '"]:checked');
+    return el ? el.value : '';
+  }
+
+  function needsPreference(age, held) {
+    return age === '19-23' && (held === 'none' || held === 'cbt');
+  }
+
+  quizToggle.addEventListener('click', function () {
+    var show = quizPanel.hidden;
+    quizPanel.hidden = !show;
+    quizToggle.setAttribute('aria-expanded', String(show));
+    quizToggle.textContent = show ? 'Hide the quiz' : 'Not sure what you need? Take the 30-second quiz';
+  });
+
+  quizPanel.addEventListener('change', function () {
+    quizPrefFieldset.hidden = !needsPreference(quizChecked('quiz-age'), quizChecked('quiz-held'));
+  });
+
+  function recommendLicence(age, held, pref) {
+    if (age === 'under17') {
+      return {
+        licence: null,
+        headline: 'Not quite yet',
+        text: 'You need to be at least 17 to start CBT and ride a 125cc motorcycle (16 gets you a moped/AM licence, which our schools don’t currently cover). Check back once you turn 17.'
+      };
+    }
+
+    if (held === 'a2') {
+      return {
+        licence: 'full-a',
+        headline: 'You can work towards: Full A',
+        text: 'With A2 already, you can move up to a full, unrestricted licence by retaking Mod 1 & 2 (no fresh theory test) once you’ve held A2 for 2 years and you’re 21 or over — or go the direct-access route once you turn 24.'
+      };
+    }
+
+    if (held === 'a1') {
+      if (age === '17-18') {
+        return {
+          licence: 'a1',
+          headline: 'You’re set on: A1',
+          text: 'You already hold A1 — you can keep riding on it. From 19 you’ll be eligible for A2, and from 21 (after 2 years on A2) a full licence.'
+        };
+      }
+      return {
+        licence: 'a2',
+        headline: 'You can progress to: A2',
+        text: 'With A1 already and being 19+, you’re eligible to move up to A2 for a more powerful bike (up to 35kW/47bhp).'
+      };
+    }
+
+    var cbtNote = held === 'none'
+      ? 'You’ll need CBT first — a mandatory day of training before any of these, valid for 2 years. '
+      : '';
+
+    if (age === '17-18') {
+      return {
+        licence: 'a1',
+        headline: 'You need: CBT, then A1',
+        text: cbtNote + 'At 17–18, A1 is your only option (A2 needs 19+, Full A needs 24+ direct access) — a bike up to 125cc.'
+      };
+    }
+
+    if (age === '19-23') {
+      if (pref === 'small') {
+        return {
+          licence: 'a1',
+          headline: 'You need: CBT, then A1',
+          text: cbtNote + 'A 125cc bike (up to 11kW) is fine for now — A1 is the licence for that.'
+        };
+      }
+      if (pref === 'bigger') {
+        return {
+          licence: 'a2',
+          headline: 'You need: CBT, then A2',
+          text: cbtNote + 'A2 lets you ride something more powerful (up to 35kW/47bhp) — and holding it 2 years gets you to a full licence at 21+ without a fresh theory test.'
+        };
+      }
+      return null; // ambiguous — needs the follow-up question
+    }
+
+    return {
+      licence: 'full-a',
+      headline: 'You need: CBT, then Full A (Direct Access)',
+      text: cbtNote + 'At 24+ you can go straight for a full, unrestricted licence — no need to pass through A1 or A2 first.'
+    };
+  }
+
+  quizSubmit.addEventListener('click', function () {
+    var age = quizChecked('quiz-age');
+    var held = quizChecked('quiz-held');
+    var pref = quizChecked('quiz-pref');
+
+    if (!age || !held || (needsPreference(age, held) && !pref)) {
+      quizError.hidden = false;
+      quizResult.hidden = true;
+      return;
+    }
+
+    var rec = recommendLicence(age, held, pref);
+    quizError.hidden = true;
+
+    quizResultHeadline.textContent = rec.headline;
+    quizResultText.textContent = rec.text;
+    quizResult.dataset.licence = rec.licence || '';
+    quizSeeSchools.hidden = !rec.licence;
+    quizResult.hidden = false;
+  });
+
+  quizSeeSchools.addEventListener('click', function () {
+    var licence = quizResult.dataset.licence;
+    if (!licence) return;
+    licenceSelect.value = licence;
+    licenceForm.dispatchEvent(new Event('submit', { cancelable: true }));
+  });
 
   renderCardPrices(); // show "Prices from £X" immediately, before any search
 })();

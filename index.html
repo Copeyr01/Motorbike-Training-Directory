@@ -803,14 +803,16 @@
       };
     }
 
-    var cbtNote = held === 'none'
+    var needsCbt = held === 'none';
+    var cbtNote = needsCbt
       ? 'You’ll need CBT first — a mandatory day of training before any of these, valid for 2 years. '
       : '';
+    var headlinePrefix = needsCbt ? 'CBT, then ' : '';
 
     if (age === '17-18') {
       return {
         licence: 'a1',
-        headline: 'You need: CBT, then A1',
+        headline: 'You need: ' + headlinePrefix + 'A1',
         text: cbtNote + 'At 17–18, A1 is your only option (A2 needs 19+, Full A needs 24+ direct access) — a bike up to 125cc.'
       };
     }
@@ -819,14 +821,14 @@
       if (pref === 'small') {
         return {
           licence: 'a1',
-          headline: 'You need: CBT, then A1',
+          headline: 'You need: ' + headlinePrefix + 'A1',
           text: cbtNote + 'A 125cc bike (up to 11kW) is fine for now — A1 is the licence for that.'
         };
       }
       if (pref === 'bigger') {
         return {
           licence: 'a2',
-          headline: 'You need: CBT, then A2',
+          headline: 'You need: ' + headlinePrefix + 'A2',
           text: cbtNote + 'A2 lets you ride something more powerful (up to 35kW/47bhp) — and holding it 2 years gets you to a full licence at 21+ without a fresh theory test.'
         };
       }
@@ -835,7 +837,7 @@
 
     return {
       licence: 'full-a',
-      headline: 'You need: CBT, then Full A (Direct Access)',
+      headline: 'You need: ' + headlinePrefix + 'Full A (Direct Access)',
       text: cbtNote + 'At 24+ you can go straight for a full, unrestricted licence — no need to pass through A1 or A2 first.'
     };
   }

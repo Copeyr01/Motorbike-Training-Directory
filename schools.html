@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edinburgh motorbike training schools — Upshift</title>
+<meta name="description" content="Compare every CBT, A1, A2 and Full A motorcycle course in Edinburgh. Filter by licence, postcode or school name — real schools, real prices.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="canonical" href="https://getonbikes.vercel.app/schools.html">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Upshift">
+<meta property="og:title" content="Edinburgh motorbike training schools — Upshift">
+<meta property="og:description" content="Compare every CBT, A1, A2 and Full A motorcycle course in Edinburgh. Filter by licence, postcode or school name — real schools, real prices.">
+<meta property="og:url" content="https://getonbikes.vercel.app/schools.html">
+<meta property="og:image" content="https://getonbikes.vercel.app/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Edinburgh motorbike training schools — Upshift">
+<meta name="twitter:description" content="Compare every CBT, A1, A2 and Full A motorcycle course in Edinburgh. Filter by licence, postcode or school name — real schools, real prices.">
+<meta name="twitter:image" content="https://getonbikes.vercel.app/og-image.png">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .filter-bar { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .filter-bar__licence, .filter-bar__sort { min-width: 160px; }
+  .filter-bar__licence select, .filter-bar__sort select {
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    padding: 0 16px;
+    font-size: 0.9375rem;
+    font-family: inherit;
+    color: var(--text);
+    outline: none;
+  }
+  .filter-bar__name { flex: 1; min-width: 200px; margin: 0; }
+  .postcode-form { display: flex; align-items: center; gap: 8px; flex: 1; min-width: 240px; }
+  .postcode-form .hero-search { flex: 1; }
+  .field-error { color: var(--text-2); font-size: 0.8125rem; margin-top: 8px; }
+  .chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .chips-row[hidden] { display: none; }
+  .filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--off);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    font-size: 0.8125rem;
+    color: var(--text-2);
+    padding: 4px 8px 4px 12px;
+  }
+  .filter-chip button {
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--text-2);
+    font-family: inherit;
+  }
+  .filter-chip button:hover { color: var(--text); }
+  .loading-indicator { color: var(--text-3); }
+  .loading-indicator[hidden] { display: none; }
+  .card-distance { font-size: 0.8125rem; color: var(--green); font-weight: 600; margin: 4px 0 0; }
+  .card-distance--unavailable { color: var(--text-3); font-weight: 400; }
+  .card-price { font-size: 1rem; font-weight: 700; color: var(--text); margin: 2px 0 0; }
+</style>
+</head>
+<body>
+<a href="#main-content" class="skip-link">Skip to main content</a>
+
+<header class="navbar">
+  <div class="container navbar__inner">
+    <a href="index.html" class="navbar__logo"><span class="accent">Up</span>shift</a>
+
+    <input type="checkbox" id="nav-search-toggle" class="navbar__toggle-checkbox" hidden>
+    <input type="checkbox" id="nav-menu-toggle" class="navbar__toggle-checkbox" hidden>
+
+    <div class="navbar-search navbar__search">
+      <input type="text" class="navbar-search__input" id="nav-search-input" placeholder="Search schools" aria-label="Search schools">
+    </div>
+
+    <nav class="navbar__links">
+      <a href="pages/licence-guide.html">Licence guides</a>
+      <a href="schools.html">Reviews</a>
+    </nav>
+
+    <div class="navbar__mobile-icons">
+      <label for="nav-search-toggle" class="navbar__icon-btn" aria-label="Search"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="9" r="6"></circle><line x1="14" y1="14" x2="18" y2="18"></line></svg></label>
+      <label for="nav-menu-toggle" class="navbar__icon-btn" aria-label="Menu"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="2" y1="5" x2="18" y2="5"></line><line x1="2" y1="10" x2="18" y2="10"></line><line x1="2" y1="15" x2="18" y2="15"></line></svg></label>
+    </div>
+  </div>
+</header>
+
+<main id="main-content">
+
+<div class="breadcrumb">
+  <div class="container">
+    <a href="index.html">Home</a> / Edinburgh schools
+  </div>
+</div>
+
+<section style="padding: 32px 0 0;">
+  <div class="container">
+    <h1>Edinburgh training schools</h1>
+
+    <div class="filter-bar" style="margin-top:20px;">
+      <div class="hero-search filter-bar__licence">
+        <select id="filter-licence" aria-label="Filter by licence">
+          <option value="">All licences</option>
+          <option value="cbt">CBT</option>
+          <option value="a1">A1</option>
+          <option value="a2">A2</option>
+          <option value="full-a">Full A</option>
+        </select>
+      </div>
+
+      <form class="postcode-form" id="postcode-form" autocomplete="off">
+        <div class="hero-search">
+          <label for="filter-postcode" class="sr-only">Postcode</label>
+          <input type="text" class="hero-search__input" id="filter-postcode" placeholder="Postcode (optional)">
+        </div>
+        <button type="submit" class="btn btn--outline btn--sm">Apply</button>
+      </form>
+
+      <div class="hero-search filter-bar__name">
+        <label for="filter-name" class="sr-only">School name</label>
+        <input type="text" class="hero-search__input" id="filter-name" placeholder="Search by school name">
+      </div>
+
+      <div class="hero-search filter-bar__sort">
+        <select id="filter-sort" aria-label="Sort by">
+          <option value="relevance">Sort: Relevance</option>
+          <option value="price">Sort: Price</option>
+          <option value="distance">Sort: Distance</option>
+          <option value="name">Sort: Name</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn btn--ghost btn--sm" id="filter-clear">Clear filters</button>
+    </div>
+
+    <p class="field-error" id="postcode-error" hidden></p>
+    <p class="loading-indicator text-body-sm" id="loading-indicator" hidden>Finding distances…</p>
+
+    <div class="chips-row" id="chips-row" hidden></div>
+
+    <p class="text-body-sm" style="color:var(--text-2); margin: 16px 0 24px;" id="results-desc">3 schools</p>
+  </div>
+</section>
+
+<section style="padding: 0 0 48px;">
+  <div class="container">
+    <div class="listing-list" id="listings"></div>
+
+    <div id="empty-state" style="text-align:center; padding:24px 0 0;" hidden>
+      <p class="text-body-sm" style="color:var(--text-2); margin: 0 0 16px;">No schools match your filters.</p>
+      <button type="button" class="btn btn--outline btn--sm" id="empty-clear">Clear filters</button>
+    </div>
+  </div>
+</section>
+
+</main>
+<footer class="footer">
+  <div class="container footer__grid">
+    <div>
+      <p class="text-label" style="color:#fff; margin: 0 0 12px;"><span class="accent">Up</span>shift</p>
+      <p class="text-body-sm">The fastest way to find and compare motorbike training in Edinburgh.</p>
+    </div>
+    <div>
+      <p class="text-label" style="color:#fff; margin: 0 0 12px;">Licences</p>
+      <ul style="display:flex; flex-direction:column; gap:8px;">
+        <li><a href="pages/licence-guide.html#cbt" class="text-body-sm">CBT</a></li>
+        <li><a href="pages/licence-guide.html#a1" class="text-body-sm">A1</a></li>
+        <li><a href="pages/licence-guide.html#a2" class="text-body-sm">A2</a></li>
+        <li><a href="pages/licence-guide.html#full-a" class="text-body-sm">Full A</a></li>
+        <li><a href="pages/licence-guide.html#mod-1-2" class="text-body-sm">Mod 1 &amp; 2</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-label" style="color:#fff; margin: 0 0 12px;">Company</p>
+      <ul style="display:flex; flex-direction:column; gap:8px;">
+        <li><a href="pages/about-us.html" class="text-body-sm">About us</a></li>
+        <li><a href="pages/how-we-rank-schools.html" class="text-body-sm">How we rank schools</a></li>
+        <li><a href="pages/list-your-school.html" class="text-body-sm">For training schools</a></li>
+        <li><a href="pages/contact-us.html" class="text-body-sm">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <p class="text-label" style="color:#fff; margin: 0 0 12px;">Legal</p>
+      <ul style="display:flex; flex-direction:column; gap:8px;">
+        <li><a href="pages/privacy-policy.html" class="text-body-sm">Privacy policy</a></li>
+        <li><a href="pages/terms-of-use.html" class="text-body-sm">Terms of use</a></li>
+        <li><a href="pages/cookie-policy.html" class="text-body-sm">Cookie policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="container" style="border-top: 1px solid rgba(255,255,255,0.15); margin-top: 32px; padding-top: 20px;">
+    <p class="text-fine">© 2026 Upshift. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="js/schools-data.js"></script>
+<script src="js/schools.js"></script>
+<script>
+(function () {
+  var licenceSelect = document.getElementById('filter-licence');
+  var postcodeForm = document.getElementById('postcode-form');
+  var postcodeInput = document.getElementById('filter-postcode');
+  var postcodeError = document.getElementById('postcode-error');
+  var nameInput = document.getElementById('filter-name');
+  var sortSelect = document.getElementById('filter-sort');
+  var clearBtn = document.getElementById('filter-clear');
+  var emptyClearBtn = document.getElementById('empty-clear');
+  var loadingIndicator = document.getElementById('loading-indicator');
+  var chipsRow = document.getElementById('chips-row');
+  var resultsDesc = document.getElementById('results-desc');
+  var listings = document.getElementById('listings');
+  var emptyState = document.getElementById('empty-state');
+  var navInput = document.getElementById('nav-search-input');
+
+  var CITY = 'edinburgh';
+  var distanceById = null; // Map<school.id, milesOrNull>, set once a postcode resolves
+  var appliedPostcode = ''; // last postcode that was actually geocoded (may differ from the input's live value)
+
+  function render() {
+    var criteria = { city: CITY, licence: licenceSelect.value, q: nameInput.value };
+    var filtered = Schools.filterSchools(SCHOOLS, criteria);
+    var sorted = Schools.sortSchools(filtered, {
+      sortBy: sortSelect.value,
+      distanceById: distanceById,
+      activeLicence: licenceSelect.value
+    });
+
+    listings.innerHTML = '';
+    sorted.forEach(function (school) {
+      listings.appendChild(Schools.renderListingCard(school, {
+        activeLicence: licenceSelect.value,
+        distanceById: distanceById
+      }));
+    });
+
+    emptyState.hidden = sorted.length !== 0;
+    resultsDesc.textContent = sorted.length + (sorted.length === 1 ? ' school' : ' schools') +
+      (licenceSelect.value ? ' teaching ' + Schools.LICENCE_LABELS[licenceSelect.value] : '');
+
+    renderChips();
+    syncUrl();
+  }
+
+  function renderChips() {
+    var chips = [];
+    if (licenceSelect.value) {
+      chips.push({ label: Schools.LICENCE_LABELS[licenceSelect.value], clear: function () { licenceSelect.value = ''; render(); } });
+    }
+    if (appliedPostcode) {
+      chips.push({ label: appliedPostcode, clear: function () {
+        appliedPostcode = '';
+        postcodeInput.value = '';
+        distanceById = null;
+        postcodeError.hidden = true;
+        render();
+      } });
+    }
+    if (nameInput.value.trim()) {
+      var q = nameInput.value.trim();
+      chips.push({ label: '"' + q + '"', clear: function () { nameInput.value = ''; render(); } });
+    }
+
+    chipsRow.innerHTML = '';
+    chips.forEach(function (chip) {
+      var el = document.createElement('span');
+      el.className = 'filter-chip';
+      var text = document.createElement('span');
+      text.textContent = chip.label;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('aria-label', 'Remove filter: ' + chip.label);
+      btn.textContent = '×';
+      btn.addEventListener('click', chip.clear);
+      el.appendChild(text);
+      el.appendChild(btn);
+      chipsRow.appendChild(el);
+    });
+    chipsRow.hidden = chips.length === 0;
+  }
+
+  function syncUrl() {
+    var qs = Schools.toQueryString({
+      city: CITY,
+      licence: licenceSelect.value,
+      postcode: appliedPostcode,
+      q: nameInput.value.trim(),
+      sort: sortSelect.value !== 'relevance' ? sortSelect.value : ''
+    });
+    history.replaceState(null, '', 'schools.html' + (qs ? '?' + qs : ''));
+  }
+
+  function applyPostcode(postcode) {
+    postcodeError.hidden = true;
+
+    if (!postcode) {
+      appliedPostcode = '';
+      distanceById = null;
+      render();
+      return;
+    }
+
+    if (!Schools.isPostcodeLike(postcode)) {
+      postcodeError.textContent = '"' + postcode + '" doesn’t look like a UK postcode. Try a full postcode (EH11 3XX) or area code (EH11).';
+      postcodeError.hidden = false;
+      appliedPostcode = '';
+      distanceById = null;
+      render();
+      return;
+    }
+
+    loadingIndicator.hidden = false;
+    Schools.geocode(postcode).then(function (origin) {
+      if (postcodeInput.value.trim() !== postcode) return; // input changed while waiting
+      loadingIndicator.hidden = true;
+
+      if (!origin) {
+        postcodeError.textContent = 'Couldn’t find "' + postcode + '" — double-check it and try again.';
+        postcodeError.hidden = false;
+        appliedPostcode = '';
+        distanceById = null;
+        render();
+        return;
+      }
+
+      appliedPostcode = postcode;
+      Schools.computeDistances(SCHOOLS, origin).then(function (map) {
+        if (postcodeInput.value.trim() !== postcode) return;
+        distanceById = map;
+        render();
+      });
+    });
+  }
+
+  // -- Wiring --------------------------------------------------------------
+  licenceSelect.addEventListener('change', render);
+  sortSelect.addEventListener('change', render);
+
+  var nameDebounce = null;
+  nameInput.addEventListener('input', function () {
+    clearTimeout(nameDebounce);
+    nameDebounce = setTimeout(render, 150);
+  });
+
+  postcodeForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    applyPostcode(postcodeInput.value.trim());
+  });
+
+  function clearAll() {
+    licenceSelect.value = '';
+    postcodeInput.value = '';
+    nameInput.value = '';
+    sortSelect.value = 'relevance';
+    appliedPostcode = '';
+    distanceById = null;
+    postcodeError.hidden = true;
+    render();
+  }
+  clearBtn.addEventListener('click', clearAll);
+  emptyClearBtn.addEventListener('click', clearAll);
+
+  if (navInput) {
+    navInput.addEventListener('keydown', function (e) {
+      if (e.key !== 'Enter') return;
+      e.preventDefault();
+      nameInput.value = navInput.value;
+      navInput.value = '';
+      render();
+    });
+  }
+
+  // -- Initial state from URL ----------------------------------------------
+  var initial = Schools.parseQueryString(location.search);
+  licenceSelect.value = initial.licence;
+  nameInput.value = initial.q;
+  sortSelect.value = initial.sort;
+  postcodeInput.value = initial.postcode;
+
+  if (initial.postcode) {
+    applyPostcode(initial.postcode);
+  } else {
+    render();
+  }
+})();
+</script>
+
+</body>
+</html>
